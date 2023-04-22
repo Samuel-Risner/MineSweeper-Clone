@@ -1,11 +1,14 @@
-import { settings } from "../settings";
+import { settings } from "../settings.js";
 
 export class SelectFieldSizeMenu {
     
     private menuElement: HTMLDivElement;
 
     private selectSizeContainer: HTMLDivElement;
-    private fieldSizes: [number, number][];
+    /**
+     * width, height, amount mines
+     */
+    private fieldSizes: [number, number, number][];
 
     private goToSelectCustomSizeButton: HTMLButtonElement;
     private selectCustomSizeElement: HTMLDivElement;
@@ -20,9 +23,9 @@ export class SelectFieldSizeMenu {
 
         this.selectSizeContainer = document.getElementById("selectSizeContainer") as HTMLDivElement;
         this.fieldSizes = [
-            [8, 8],
-            [16, 16],
-            [32, 16]
+            [8, 8, 8],
+            [16, 16, 32],
+            [32, 16, 64]
         ];
         this._createSelectSizeButtons();
 
@@ -73,8 +76,8 @@ export class SelectFieldSizeMenu {
 
             button.className = "w-full aspect-square border-8";
 
-            div.textContent = `${this.fieldSizes[i][0]}x${this.fieldSizes[i][1]}`;
-            div.className = "m-auto";
+            div.textContent = `${this.fieldSizes[i][0]}x${this.fieldSizes[i][1]}\nMines: ${this.fieldSizes[i][2]}`;
+            div.className = "m-auto whitespace-pre-line";
 
             button.appendChild(div);
             this.selectSizeContainer.appendChild(button);

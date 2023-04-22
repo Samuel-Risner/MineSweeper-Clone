@@ -1,4 +1,4 @@
-import { FieldElement } from "./field_element";
+import { FieldElement } from "./field_element.js";
 
 export class FieldOuter extends FieldElement {
     

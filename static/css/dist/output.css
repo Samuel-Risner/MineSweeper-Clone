@@ -536,17 +536,12 @@ video {
   aspect-ratio: 1 / 1;
 }
 
-.h-fit {
-  height: -moz-fit-content;
-  height: fit-content;
+.w-11\/12 {
+  width: 91.666667%;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-11\/12 {
-  width: 91.666667%;
 }
 
 .grid-cols-1 {
@@ -561,16 +556,16 @@ video {
   gap: 2rem;
 }
 
-.border-8 {
-  border-width: 8px;
-}
-
-.border-2 {
-  border-width: 2px;
+.whitespace-pre-line {
+  white-space: pre-line;
 }
 
 .border-4 {
   border-width: 4px;
+}
+
+.border-8 {
+  border-width: 8px;
 }
 
 .p-8 {

@@ -1,53 +1,41 @@
-import { FieldElement } from "./field_element.js";
 import { FieldInner } from "./field_inner.js";
 import { FieldOuter } from "./field_outer.js";
-
 export class Field {
-
-    private field: FieldElement[][];
-    
-    constructor(
-        private width: number,
-        private height: number,
-        private amountMines: number
-    ) {
+    width;
+    height;
+    amountMines;
+    field;
+    constructor(width, height, amountMines) {
+        this.width = width;
+        this.height = height;
+        this.amountMines = amountMines;
         this.field = [];
         this._createField();
     }
-
-    private _createField() {
+    _createField() {
         const outer = new FieldOuter();
-
         // Top row with outer elements:
-        let row: FieldElement[] = [];
+        let row = [];
         this.field.push(row);
-
         for (let i = 0; i < this.width + 2; i++) {
             row.push(outer);
         }
-
         // The middle rows, starting and ending with outer elements and in the middle with inner elements:
         for (let i = 0; i < this.height; i++) {
             row = [];
             this.field.push(row);
-
             row.push(outer);
-
-            for (let j = 0; j < this.width; j++)  {
+            for (let j = 0; j < this.width; j++) {
                 row.push(new FieldInner(outer, outer, outer, outer));
             }
-
             row.push(outer);
         }
-
         // Bottom row with outer elements:
         row = [];
         this.field.push(row);
-
         for (let i = 0; i < this.width + 2; i++) {
             row.push(outer);
         }
-
         // Link the inner elements together:
         for (let r = 1; r < this.field.length - 1; r++) {
             for (let c = 1; c < this.field[r].length; c++) {
@@ -58,7 +46,5 @@ export class Field {
                 el.setRight(this.field[r][c + 1]);
             }
         }
-
     }
-
 }
