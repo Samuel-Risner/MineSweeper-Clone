@@ -4,5 +4,6 @@ export const field = {
     maxWidth: 5000,
     maxHeight: 5000,
     minAmountMines: 1,
-    maxAmountMines: 5000 * 5000 - 1
+    maxAmountMines: 5000 * 5000 - 1,
+    minNoMineTiles: 8
 }

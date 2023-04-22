@@ -56,7 +56,8 @@ export class SelectFieldSizeMenu {
             if (!(width && height && amountMines)) {
                 return;
             }
-            if (amountMines >= (width * height)) {
+            if (amountMines >= (width * height) - settings.field.minNoMineTiles) {
+                console.error(`Not enough space for all the mines!`)
                 return;
             }
 

@@ -7,6 +7,8 @@ export class Field {
     private fieldContainer: HTMLDivElement;
     private field: FieldElement[][];
     private fieldTable: HTMLTableElement;
+
+    private firstClick: boolean;
     
     constructor(
         private width: number,
@@ -23,6 +25,8 @@ export class Field {
 
         this.field = [];
         this._createField();
+
+        this.firstClick = false;
     }
 
     private _createField() {
@@ -50,7 +54,7 @@ export class Field {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);
 
-                row.push(new FieldInner(outer, outer, outer, outer, cellElement));
+                row.push(new FieldInner(outer, outer, outer, outer, cellElement, this));
             }
 
             row.push(outer);
@@ -75,6 +79,38 @@ export class Field {
             }
         }
 
+    }
+
+    private _setMines(doNotSetToMines: FieldElement[]) {
+        for (let i = 0; i < this.amountMines; i++) {
+            const randomRow = this.field[Math.floor(1 + Math.random()*this.field.length - 1)];
+            const randomTile = randomRow[Math.floor(1 + Math.random()*randomRow.length - 1)];
+
+            if (doNotSetToMines.includes(randomTile)) {
+                i--;
+                continue;
+            }
+
+            if (!randomTile.setMine()) {
+                i--;
+            }
+        }
+
+        for (let i = 1; i < this.field.length - 1; i++) {
+            for (let j = 1; j < this.field[i].length - 1; j++) {
+                this.field[i][j].setNumber();
+            }
+        }
+    }
+
+    onClick(el: FieldInner) {
+        if (this.firstClick) {
+            return;
+        }
+
+        this.firstClick = true;
+        const randomSurroundings: FieldElement[] = el.getRandomSurroundings();
+        this._setMines(randomSurroundings);
     }
 
 }
