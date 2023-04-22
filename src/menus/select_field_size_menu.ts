@@ -7,9 +7,11 @@ export class SelectFieldSizeMenu {
 
     private goToSelectCustomSizeButton: HTMLButtonElement;
     private selectCustomSizeElement: HTMLDivElement;
+    private confirmCustomSizeButton: HTMLButtonElement;
 
     private inputWidthElement: HTMLInputElement;
     private inputHeightElement: HTMLInputElement;
+    private inputAmountMinesElement: HTMLInputElement;
 
     constructor() {
         this.menuElement = document.getElementById("selectFieldSizeMenu") as HTMLDivElement;
@@ -28,9 +30,28 @@ export class SelectFieldSizeMenu {
             this.selectCustomSizeElement.hidden = false;
         }
         this.selectCustomSizeElement = document.getElementById("selectCustomSize") as HTMLDivElement;
+        this.confirmCustomSizeButton = document.getElementById("selectCustomSizeConfirm") as HTMLButtonElement;
+        this.confirmCustomSizeButton.onclick = () => {
+            const width = Number(this.inputWidthElement.value);
+            const height = Number(this.inputHeightElement.value);
+            const amountMines = Number(this.inputAmountMinesElement.value);
+            if (!(width && height && amountMines)) {
+                return;
+            }
+            if (amountMines >= (width * height)) {
+                return;
+            }
+        }
 
         this.inputWidthElement = document.getElementById("inputWidth") as HTMLInputElement;
         this.inputHeightElement = document.getElementById("inputHeight") as HTMLInputElement;
+        this.inputAmountMinesElement = document.getElementById("inputAmountMines") as HTMLInputElement;
+        this.inputWidthElement.min = String(3);
+        this.inputHeightElement.min = String(3);
+        this.inputAmountMinesElement.min = String(1);
+        this.inputWidthElement.max = String(5000);
+        this.inputHeightElement.max = String(5000);
+        this.inputAmountMinesElement.max = String(5000 * 5000 - 1);
     }
 
     private _createSelectSizeButtons() {
