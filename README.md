@@ -6,6 +6,8 @@
 # Btw
  I know how easy it is to cheat the game, but if you do not find the optimal way, then SHAME! SHAME! SHAME!
 
+# Project Structure
+ 
 # Development (Windows cmd)
 
  ## Run the Python server for the first time
