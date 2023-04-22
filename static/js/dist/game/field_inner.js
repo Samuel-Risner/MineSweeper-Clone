@@ -4,12 +4,20 @@ export class FieldInner extends FieldElement {
     elementLeft;
     elementBottom;
     elementRight;
-    constructor(elementTop, elementLeft, elementBottom, elementRight) {
+    fieldElement;
+    constructor(elementTop, elementLeft, elementBottom, elementRight, fieldElement) {
         super();
         this.elementTop = elementTop;
         this.elementLeft = elementLeft;
         this.elementBottom = elementBottom;
         this.elementRight = elementRight;
+        this.fieldElement = fieldElement;
+        this._createElements();
+    }
+    _createElements() {
+        const div = document.createElement("div");
+        this.fieldElement.appendChild(div);
+        div.textContent = `q`;
     }
     setTop(el) {
         this.elementTop = el;

@@ -4,11 +4,19 @@ export class Field {
     width;
     height;
     amountMines;
+    fieldContainer;
     field;
+    fieldTable;
     constructor(width, height, amountMines) {
         this.width = width;
         this.height = height;
         this.amountMines = amountMines;
+        this.fieldContainer = document.getElementById("fieldContainer");
+        this.fieldTable = document.createElement("table");
+        this.fieldContainer.appendChild(this.fieldTable);
+        console.log(width);
+        console.log(height);
+        console.log(amountMines);
         this.field = [];
         this._createField();
     }
@@ -25,8 +33,12 @@ export class Field {
             row = [];
             this.field.push(row);
             row.push(outer);
+            const rowElement = document.createElement("tr");
+            this.fieldTable.appendChild(rowElement);
             for (let j = 0; j < this.width; j++) {
-                row.push(new FieldInner(outer, outer, outer, outer));
+                const cellElement = document.createElement("td");
+                rowElement.appendChild(cellElement);
+                row.push(new FieldInner(outer, outer, outer, outer, cellElement));
             }
             row.push(outer);
         }

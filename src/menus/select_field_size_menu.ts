@@ -1,4 +1,5 @@
-import { settings } from "../settings.js";
+import { Game } from "./../game.js";
+import { settings } from "./../settings.js";
 
 export class SelectFieldSizeMenu {
     
@@ -18,7 +19,9 @@ export class SelectFieldSizeMenu {
     private inputHeightElement: HTMLInputElement;
     private inputAmountMinesElement: HTMLInputElement;
 
-    constructor() {
+    constructor(
+        private game: Game
+    ) {
         this.menuElement = document.getElementById("selectFieldSizeMenu") as HTMLDivElement;
 
         this.selectSizeContainer = document.getElementById("selectSizeContainer") as HTMLDivElement;
@@ -56,6 +59,10 @@ export class SelectFieldSizeMenu {
             if (amountMines >= (width * height)) {
                 return;
             }
+
+            this.game.newGame(width, height, amountMines);
+            this.hide();
+            game.show();
         }
 
         this.inputWidthElement = document.getElementById("inputWidth") as HTMLInputElement;
@@ -81,6 +88,12 @@ export class SelectFieldSizeMenu {
 
             button.appendChild(div);
             this.selectSizeContainer.appendChild(button);
+
+            button.onclick = () => {
+                this.game.newGame(this.fieldSizes[i][0], this.fieldSizes[i][1], this.fieldSizes[i][2]);
+                this.hide();
+                this.game.show();
+            }
         }
     }
 

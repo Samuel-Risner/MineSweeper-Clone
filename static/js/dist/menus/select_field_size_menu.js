@@ -1,5 +1,6 @@
-import { settings } from "../settings.js";
+import { settings } from "./../settings.js";
 export class SelectFieldSizeMenu {
+    game;
     menuElement;
     selectSizeContainer;
     /**
@@ -12,7 +13,8 @@ export class SelectFieldSizeMenu {
     inputWidthElement;
     inputHeightElement;
     inputAmountMinesElement;
-    constructor() {
+    constructor(game) {
+        this.game = game;
         this.menuElement = document.getElementById("selectFieldSizeMenu");
         this.selectSizeContainer = document.getElementById("selectSizeContainer");
         this.fieldSizes = [
@@ -47,6 +49,9 @@ export class SelectFieldSizeMenu {
             if (amountMines >= (width * height)) {
                 return;
             }
+            this.game.newGame(width, height, amountMines);
+            this.hide();
+            game.show();
         };
         this.inputWidthElement = document.getElementById("inputWidth");
         this.inputHeightElement = document.getElementById("inputHeight");
@@ -67,6 +72,11 @@ export class SelectFieldSizeMenu {
             div.className = "m-auto whitespace-pre-line";
             button.appendChild(div);
             this.selectSizeContainer.appendChild(button);
+            button.onclick = () => {
+                this.game.newGame(this.fieldSizes[i][0], this.fieldSizes[i][1], this.fieldSizes[i][2]);
+                this.hide();
+                this.game.show();
+            };
         }
     }
     hide() {

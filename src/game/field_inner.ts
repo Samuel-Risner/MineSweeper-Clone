@@ -6,9 +6,17 @@ export class FieldInner extends FieldElement {
         private elementTop: FieldElement,
         private elementLeft: FieldElement,
         private elementBottom: FieldElement,
-        private elementRight: FieldElement
+        private elementRight: FieldElement,
+        private fieldElement: HTMLTableCellElement
     ) {
         super();
+        this._createElements();
+    }
+
+    private _createElements() {
+        const div = document.createElement("div");
+        this.fieldElement.appendChild(div);
+        div.textContent = `q`;
     }
 
     setTop(el: FieldElement) {
