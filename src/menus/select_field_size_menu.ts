@@ -44,20 +44,45 @@ export class SelectFieldSizeMenu {
             const height = Number(this.inputHeightElement.value);
             const amountMines = Number(this.inputAmountMinesElement.value);
 
-            if ((width < settings.field.minWidth) || (width > settings.field.maxWidth)) {
-                return;
-            }
-            if ((height < settings.field.minHeight) || (height > settings.field.maxHeight)) {
-                return;
-            }
-            if ((amountMines < settings.field.minAmountMines) || (amountMines > settings.field.maxAmountMines)) {
-                return;
-            }
             if (!(width && height && amountMines)) {
+                alert("Please only enter numbers.");
+                console.error("Please only enter numbers.");
                 return;
             }
+
+            if (width < settings.field.minWidth) {
+                alert(`The width of the field is to small. The minimum is ${settings.field.minWidth}.`);
+                console.error(`The width of the field is to small. The minimum is ${settings.field.minWidth}.`);
+                return;
+            }
+
+            if (height < settings.field.minHeight) {
+                alert(`The height of the field is to small. The minimum is ${settings.field.minHeight}.`)
+                console.error(`The height of the field is to small. The minimum is ${settings.field.minHeight}.`);
+                return;
+            }
+
+            if (width > settings.field.maxWidth) {
+                alert(`The width of the field is to big. The maximum is ${settings.field.maxWidth}.`)
+                console.error(`The width of the field is to big. The maximum is ${settings.field.maxWidth}.`);
+                return;
+            }
+
+            if (height > settings.field.maxHeight) {
+                alert(`The height of the field is to big. The maximum is ${settings.field.maxHeight}.`);
+                console.error(`The height of the field is to big. The maximum is ${settings.field.maxHeight}.`);
+                return;
+            }
+
+            if (amountMines < settings.field.minAmountMines) {
+                alert(`The amount of mines is too small. The minimum is ${settings.field.minAmountMines}.`);
+                console.error(`The amount of mines is too small. The minimum is ${settings.field.minAmountMines}.`);
+                return;
+            }
+            
             if (amountMines >= (width * height) - settings.field.minNoMineTiles) {
-                console.error(`Not enough space for all the mines!`)
+                alert(`Not enough space for all the mines!`);
+                console.error(`Not enough space for all the mines!`);
                 return;
             }
 
@@ -67,14 +92,18 @@ export class SelectFieldSizeMenu {
         }
 
         this.inputWidthElement = document.getElementById("inputWidth") as HTMLInputElement;
-        this.inputHeightElement = document.getElementById("inputHeight") as HTMLInputElement;
-        this.inputAmountMinesElement = document.getElementById("inputAmountMines") as HTMLInputElement;
         this.inputWidthElement.min = String(settings.field.minWidth);
-        this.inputHeightElement.min = String(settings.field.minHeight);
-        this.inputAmountMinesElement.min = String(settings.field.minAmountMines);
         this.inputWidthElement.max = String(settings.field.maxWidth);
+        this.inputWidthElement.value = String(settings.field.minWidth);
+
+        this.inputHeightElement = document.getElementById("inputHeight") as HTMLInputElement;
+        this.inputHeightElement.min = String(settings.field.minHeight);
         this.inputHeightElement.max = String(settings.field.maxHeight);
-        this.inputAmountMinesElement.max = String(settings.field.maxAmountMines);
+        this.inputHeightElement.value = String(settings.field.minHeight);
+
+        this.inputAmountMinesElement = document.getElementById("inputAmountMines") as HTMLInputElement;
+        this.inputAmountMinesElement.min = String(settings.field.minAmountMines);
+        this.inputAmountMinesElement.value = String(1);
     }
 
     private _createSelectSizeButtons() {
