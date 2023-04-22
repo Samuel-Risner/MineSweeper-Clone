@@ -9,6 +9,51 @@
     <script src="/static/js/dist/index.js" type="module" defer></script>
 </head>
 <body>
-    Test!
+    <div id="mainMenu">
+        <div class="grid grid-cols-1 gap-8 p-8 text-5xl">
+
+            <button id="goToSelectFieldSizeMenu" class="w-full aspect-square border-8">
+                <div class="m-auto">
+                    Play
+                </div>
+            </button>
+
+            <button id="goToLeaderboard" class="w-full aspect-square border-8">
+                <div class="m-auto">
+                    Leaderboard
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="selectFieldSizeMenu" hidden>
+        <div class="grid grid-cols-1 gap-8 p-8 text-5xl">
+
+            <div id="selectSizeContainer" class="grid grid-cols-1 gap-8"></div>
+
+            <button id="goToSelectCustomSize" class="w-full aspect-square border-8">
+                <div class="m-auto">
+                    custom
+                </div>
+            </button>
+
+            <div id="selectCustomSize" hidden>
+                <div class="w-full aspect-square border-8 flex flex-col text-center">
+                    <label for="inputWidth" class="w-11/12 m-auto">Width:</label>
+                    <input id="inputWidth" type="number" class="w-11/12 m-auto border-4">
+                    <label for="inputHeight"  class="w-11/12 m-auto">Height:</label>
+                    <input id="inputHeight" type="number" class="w-11/12 m-auto border-4">
+                    <button id="selectCustomSizeConfirm" class="m-auto">Confirm</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="leaderboard" hidden>
+        <div>
+            leaderboard
+        </div>
+    </div>
 </body>
 </html>
