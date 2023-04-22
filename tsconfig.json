@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "rootDir": "./src",
-    "outDir": "./static/js/dist",
+    "outDir": "./minesweeper-clone/static/js/dist",
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
