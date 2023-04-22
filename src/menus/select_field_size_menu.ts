@@ -1,3 +1,5 @@
+import { settings } from "../settings";
+
 export class SelectFieldSizeMenu {
     
     private menuElement: HTMLDivElement;
@@ -35,6 +37,16 @@ export class SelectFieldSizeMenu {
             const width = Number(this.inputWidthElement.value);
             const height = Number(this.inputHeightElement.value);
             const amountMines = Number(this.inputAmountMinesElement.value);
+
+            if ((width < settings.field.minWidth) || (width > settings.field.maxWidth)) {
+                return;
+            }
+            if ((height < settings.field.minHeight) || (height > settings.field.maxHeight)) {
+                return;
+            }
+            if ((amountMines < settings.field.minAmountMines) || (amountMines > settings.field.maxAmountMines)) {
+                return;
+            }
             if (!(width && height && amountMines)) {
                 return;
             }
@@ -46,12 +58,12 @@ export class SelectFieldSizeMenu {
         this.inputWidthElement = document.getElementById("inputWidth") as HTMLInputElement;
         this.inputHeightElement = document.getElementById("inputHeight") as HTMLInputElement;
         this.inputAmountMinesElement = document.getElementById("inputAmountMines") as HTMLInputElement;
-        this.inputWidthElement.min = String(3);
-        this.inputHeightElement.min = String(3);
-        this.inputAmountMinesElement.min = String(1);
-        this.inputWidthElement.max = String(5000);
-        this.inputHeightElement.max = String(5000);
-        this.inputAmountMinesElement.max = String(5000 * 5000 - 1);
+        this.inputWidthElement.min = String(settings.field.minWidth);
+        this.inputHeightElement.min = String(settings.field.minHeight);
+        this.inputAmountMinesElement.min = String(settings.field.minAmountMines);
+        this.inputWidthElement.max = String(settings.field.maxWidth);
+        this.inputHeightElement.max = String(settings.field.maxHeight);
+        this.inputAmountMinesElement.max = String(settings.field.maxAmountMines);
     }
 
     private _createSelectSizeButtons() {
