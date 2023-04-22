@@ -17,7 +17,11 @@ export class FieldInner extends FieldElement {
     _createElements() {
         const div = document.createElement("div");
         this.fieldElement.appendChild(div);
-        div.textContent = `q`;
+        const textDiv = document.createElement("div");
+        div.appendChild(textDiv);
+        textDiv.textContent = `q`;
+        div.className = "bg-red-500 w-10 aspect-square flex";
+        textDiv.className = "m-auto";
     }
     setTop(el) {
         this.elementTop = el;
