@@ -1,51 +1,82 @@
-import { FieldElement } from "./field_element.js";
-import { FieldInner } from "./field_inner.js";
-import { FieldOuter } from "./field_outer.js";
+import { GameSettings } from "./game_settings.js";
+import { TileInner } from "./tile_inner.js";
+import { TileOuter } from "./tile_outer.js";
+import { TileParent } from "./tile_parent.js";
 
 export class Field {
 
+    /**
+     * The html element in which "this.fieldTable" is displayed.
+     */
     private fieldContainer: HTMLDivElement;
-    private field: FieldElement[][];
+    /**
+     * The html element which contains all the tiles the user can interact with.
+     */
     private fieldTable: HTMLTableElement;
 
+    /**
+     * If the user already made their first click or not.
+     */
     private firstClick: boolean;
+
+    /**
+     * All the inner tiles.
+     */
+    private tiles: TileInner[][];
+    /**
+     * All the tiles (inner and outer).
+     */
+    private allTiles: TileParent[][];
     
     constructor(
+        /**
+         * The width of the field.
+         */
         private width: number,
+        /**
+         * The height of the field.
+         */
         private height: number,
-        private amountMines: number
+        /**
+         * The amount of mines in the field. (Value has to be disinfected before use.)
+         */
+        private amountMines: number,
+        private gameSettings: GameSettings
     ) {
         this.fieldContainer = document.getElementById("fieldContainer") as HTMLDivElement;
         this.fieldTable = document.createElement("table");
         this.fieldContainer.appendChild(this.fieldTable);
 
-        console.log(width);
-        console.log(height);
-        console.log(amountMines);
-
-        this.field = [];
-        this._createField();
-
         this.firstClick = false;
+
+        this.tiles = [];
+        this.allTiles = [];
+        this._createField();
     }
 
+    /**
+     * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
+     */
     private _createField() {
-        const outer = new FieldOuter();
+        const outer = new TileOuter();
 
         // Top row with outer elements:
-        let row: FieldElement[] = [];
-        this.field.push(row);
+        let row: TileParent[] = [];
+        this.allTiles.push(row);
 
         for (let i = 0; i < this.width + 2; i++) {
             row.push(outer);
         }
 
-        // The middle rows, starting and ending with outer elements and in the middle with inner elements:
+        // The middle rows, starting and ending with outer tiles and in the middle with inner tiles:
         for (let i = 0; i < this.height; i++) {
             row = [];
-            this.field.push(row);
+            this.allTiles.push(row);
 
             row.push(outer);
+
+            const row2: TileInner[] = [];
+            this.tiles.push(row2);
 
             const rowElement = document.createElement("tr");
             this.fieldTable.appendChild(rowElement);
@@ -54,7 +85,9 @@ export class Field {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);
 
-                row.push(new FieldInner(outer, outer, outer, outer, cellElement, this));
+                const t = new TileInner(outer, outer, outer, outer, cellElement, this);
+                row.push(t);
+                row2.push(t);
             }
 
             row.push(outer);
@@ -62,55 +95,71 @@ export class Field {
 
         // Bottom row with outer elements:
         row = [];
-        this.field.push(row);
+        this.allTiles.push(row);
 
         for (let i = 0; i < this.width + 2; i++) {
             row.push(outer);
         }
 
         // Link the inner elements together:
-        for (let r = 1; r < this.field.length - 1; r++) {
-            for (let c = 1; c < this.field[r].length; c++) {
-                const el = this.field[r][c];
-                el.setTop(this.field[r - 1][c]);
-                el.setLeft(this.field[r][c - 1]);
-                el.setBottom(this.field[r + 1][c]);
-                el.setRight(this.field[r][c + 1]);
+        for (let r = 1; r < this.allTiles.length - 1; r++) {
+            for (let c = 1; c < this.allTiles[r].length - 1; c++) {
+                const el = this.allTiles[r][c] as TileInner;
+                el.setTop(this.allTiles[r - 1][c]);
+                el.setLeft(this.allTiles[r][c - 1]);
+                el.setBottom(this.allTiles[r + 1][c]);
+                el.setRight(this.allTiles[r][c + 1]);
             }
         }
 
     }
 
-    private _setMines(doNotSetToMines: FieldElement[]) {
+    /**
+     * Sets the mines in the field and the numbers for the other tiles.
+     * @param doNotSetToMines A list with tiles that may not be set to mines.
+     */
+    private _setMines(doNotSetToMines: TileInner[]) {
         for (let i = 0; i < this.amountMines; i++) {
-            const randomRow = this.field[Math.floor(1 + Math.random()*this.field.length - 1)];
-            const randomTile = randomRow[Math.floor(1 + Math.random()*randomRow.length - 1)];
+            const randomRow = this.tiles[Math.floor(Math.random() * this.tiles.length)];
+            const randomTile = randomRow[Math.floor(Math.random() * randomRow.length)];
 
+            // Tile may not be a mine:
             if (doNotSetToMines.includes(randomTile)) {
                 i--;
                 continue;
             }
 
+            // If the tile is already a mine:
             if (!randomTile.setMine()) {
                 i--;
             }
         }
 
-        for (let i = 1; i < this.field.length - 1; i++) {
-            for (let j = 1; j < this.field[i].length - 1; j++) {
-                this.field[i][j].setNumber();
+        // Set the numbers for the remaining tiles:
+        for (let i = 0; i < this.tiles.length; i++) {
+            for (let j = 0; j < this.tiles[i].length; j++) {
+                this.tiles[i][j].setNumber();
             }
         }
     }
 
-    onClick(el: FieldInner) {
+    /**
+     * This function is always called when the user clicks on a tile.
+     * But only when the first ever click on a tile is made something relevant happens: The field is initialized.
+     * @param el 
+     * @returns 
+     */
+    onClick(el: TileInner) {
         if (this.firstClick) {
             return;
         }
 
         this.firstClick = true;
-        const randomSurroundings: FieldElement[] = el.getRandomSurroundings();
-        this._setMines(randomSurroundings);
+        this._setMines(el.mayNotBeMine());
+    }
+
+    getMode(): 0 | 1 {
+        return this.gameSettings.getMode();
     }
 
 }

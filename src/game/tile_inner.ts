@@ -1,7 +1,7 @@
 import { Field } from "./field.js";
-import { FieldElement } from "./field_element.js";
+import { TileParent } from "./tile_parent.js";
 
-export class FieldInner extends FieldElement {
+export class TileInner extends TileParent {
 
     /**
      * `-1` -> mine;
@@ -9,16 +9,19 @@ export class FieldInner extends FieldElement {
      * `1 to 8` -> corresponding numbers
      */
     private mode: number;
-    private revealed: boolean;
+    /**
+     * `0` -> tile is not revealed; `1` -> there is a question mark on the tile; `2` -> there is a flag on the tile; `3` -> tile is revealed
+     */
+    private revealed: 0 | 1 | 2 | 3;
 
     private displayElement: HTMLDivElement;
     private tileContentsElement: HTMLDivElement;
 
     constructor(
-        protected elementTop: FieldElement,
-        protected elementLeft: FieldElement,
-        protected elementBottom: FieldElement,
-        protected elementRight: FieldElement,
+        protected elementTop: TileParent,
+        protected elementLeft: TileParent,
+        protected elementBottom: TileParent,
+        protected elementRight: TileParent,
         private fieldElement: HTMLTableCellElement,
         private field: Field
     ) {
@@ -29,7 +32,7 @@ export class FieldInner extends FieldElement {
         this._setupElements();
 
         this.mode = 0;
-        this.revealed = false;
+        this.revealed = 0;
     }
 
     private _setupElements() {
@@ -45,22 +48,26 @@ export class FieldInner extends FieldElement {
         }
     }
 
-    setTop(el: FieldElement) {
+    setTop(el: TileParent) {
         this.elementTop = el;
     }
 
-    setLeft(el: FieldElement) {
+    setLeft(el: TileParent) {
         this.elementLeft = el;
     }
 
-    setBottom(el: FieldElement) {
+    setBottom(el: TileParent) {
         this.elementBottom = el;
     }
 
-    setRight(el: FieldElement) {
+    setRight(el: TileParent) {
         this.elementRight = el;
     }
-
+    
+    /**
+     * Sets the tile to be a mine, unless it already is a mine.
+     * @returns `true` if the tile was set to contain a mine, `false` if it already contained a mine.
+     */
     setMine(): boolean {
         if (this.mode === -1) {
             return false;
@@ -70,6 +77,9 @@ export class FieldInner extends FieldElement {
         return true;
     }
 
+    /**
+     * @returns `1`: tile contains a mine; `0`: tile contains no mine.
+     */
     isMine(): number {
         return this.mode === -1? 1 : 0;
     }
@@ -77,12 +87,13 @@ export class FieldInner extends FieldElement {
     spreadLeft() {
         this.elementLeft.spread();
     }
+
     spreadRight() {
         this.elementRight.spread();
     }
 
     spread() {
-        if ((this.revealed) ||(this.mode === -1)) {
+        if ((this.revealed !== 0) ||(this.mode === -1)) {
             return;
         }
 
@@ -91,7 +102,7 @@ export class FieldInner extends FieldElement {
             return;
         }
 
-        this.revealed = true;
+        this.revealed = 3;
 
         this.displayElement.className = "bg-neutral-300 w-10 aspect-square flex border-2 border-gray-400";
 
@@ -140,9 +151,12 @@ export class FieldInner extends FieldElement {
         }
     }
 
-    onClick() {
+    /**
+     * When the tile is clicked.
+     */
+    private onClick() {
         // Nothing happens if the tile was already revealed.
-        if (this.revealed) {
+        if (this.revealed === 3) {
             return;
         }
 
@@ -157,7 +171,7 @@ export class FieldInner extends FieldElement {
         } else if (this.mode === -1) {
             this.displayElement.className = "bg-red-500 w-10 aspect-square flex border-2 border-gray-400";
         } else {
-            this.revealed = true;
+            this.revealed = 3;
             this.setStyle();
         }
     }
@@ -178,25 +192,27 @@ export class FieldInner extends FieldElement {
         }
     }
     
-    addSelf(els: FieldInner[]) {
+    addSelf(els: TileInner[]) {
         els.push(this);
     }
 
-    addXAndSelfElements(els: FieldInner[]) {
+    addXAndSelfElements(els: TileInner[]) {
         els.push(this);
         this.elementLeft.addSelf(els);
         this.elementRight.addSelf(els);
     }
 
-    getRandomSurroundings(): FieldInner[] {
-        const toReturn: FieldInner[] = [this];
+    /**
+     * Returns the tiles that may not set to be mines.
+     * @returns A list with up to 9 tiles.
+     */
+    mayNotBeMine(): TileInner[] {
+        const toReturn: TileInner[] = [this];
 
         this.elementTop.addXAndSelfElements(toReturn);
         this.elementLeft.addSelf(toReturn);
         this.elementBottom.addXAndSelfElements(toReturn);
         this.elementRight.addSelf(toReturn);
-
-        console.log(toReturn);
 
         return toReturn;
     }

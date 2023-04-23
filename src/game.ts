@@ -1,4 +1,5 @@
 import { Field } from "./game/field.js";
+import { GameSettings } from "./game/game_settings.js";
 
 export class Game {
 
@@ -12,9 +13,12 @@ export class Game {
      */
     private field: Field | null;
 
+    private gameSettings: GameSettings;
+
     constructor() {
         this.gameContainer = document.getElementById("game") as HTMLDivElement;
         this.field = null;
+        this.gameSettings = new GameSettings();
     }
 
     /**
@@ -24,7 +28,7 @@ export class Game {
      * @param amountMines The amount of mines in the field.
      */
     newGame(width: number, height: number, amountMines: number) {
-        this.field = new Field(width, height, amountMines);
+        this.field = new Field(width, height, amountMines, this.gameSettings);
     }
 
     hide() {
