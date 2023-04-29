@@ -18,6 +18,7 @@ export class TileInner extends TileParent {
     revealed;
     displayElement;
     tileContentsElement;
+    tileImageElement;
     constructor(elementTop, elementLeft, elementBottom, elementRight, fieldElement, field) {
         super();
         this.elementTop = elementTop;
@@ -26,8 +27,9 @@ export class TileInner extends TileParent {
         this.elementRight = elementRight;
         this.fieldElement = fieldElement;
         this.field = field;
-        this.displayElement = document.createElement("div");
+        this.displayElement = document.createElement("button");
         this.tileContentsElement = document.createElement("div");
+        this.tileImageElement = document.createElement("img");
         this._setupElements();
         this.mode = 0;
         this.revealed = 0;
@@ -38,8 +40,12 @@ export class TileInner extends TileParent {
         this.displayElement.className = "bg-neutral-500 w-10 aspect-square flex border-2 border-gray-400";
         this.tileContentsElement.className = "m-auto";
         this.tileContentsElement.hidden = true;
-        this.displayElement.onclick = () => {
-            this.onClick();
+        this.displayElement.onclick = (ev) => {
+            this.onClick(true);
+        };
+        this.displayElement.oncontextmenu = (ev) => {
+            ev.preventDefault();
+            this.onClick(false);
         };
     }
     setTop(el) {
@@ -78,14 +84,16 @@ export class TileInner extends TileParent {
         this.elementRight.spread();
     }
     spread() {
+        // If the tile is already revealed or the tile contains a mine nothing happens.
         if ((this.revealed !== 0) || (this.mode === -1)) {
             return;
         }
+        // If the tile contains a number its style is set.
         if (this.mode > 0) {
-            this.onClick();
-            return;
+            this.setStyle();
         }
         this.revealed = 3;
+        this.tileContentsElement.hidden = false;
         this.displayElement.className = "bg-neutral-300 w-10 aspect-square flex border-2 border-gray-400";
         this.elementTop.spread();
         this.elementLeft.spread();
@@ -132,26 +140,61 @@ export class TileInner extends TileParent {
     /**
      * When the tile is clicked.
      */
-    onClick() {
-        // Nothing happens if the tile was already revealed.
-        if (this.revealed === 3) {
-            return;
-        }
+    onClick(leftClick) {
         // If this is the first ever tile being clicked the game needs further setup.
         this.field.onClick(this);
-        // Show this tiles contents.
+        // Show the tiles contents.
         this.tileContentsElement.hidden = false;
-        // THe tile is empty and adjacent tiles have to be revealed.
-        if (this.mode === 0) {
-            this.spread();
+        switch (this.revealed) {
+            case 0: // If the tile is not revealed yet:
+                // If the tile should be revealed (the mode is in "reveal tile" and the user clicked with the left mouse button):
+                if ((this.field.getMode() === 0) && leftClick) {
+                    // Only do something when the tile is not revealed and nothing is on it:
+                    if (this.revealed === 0) {
+                        // If the tile is empty it is revealed with the adjacent tiles:
+                        if (this.mode === 0) {
+                            this.spread();
+                        }
+                        else {
+                        }
+                    }
+                    // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button):
+                }
+                else if ((this.field.getMode() === 1) || !leftClick) {
+                    // If the tile is not revealed a flag is set:
+                    if (this.revealed === 0) {
+                        this.tileImageElement.src = "static/assets/1600x1600/flag.png";
+                        this.tileImageElement.hidden = false;
+                    }
+                    alert("FLAG!");
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3: // If the tile is already revealed nothing happens.
+                break;
         }
-        else if (this.mode === -1) {
-            this.displayElement.className = "bg-red-500 w-10 aspect-square flex border-2 border-gray-400";
-        }
-        else {
-            this.revealed = 3;
-            this.setStyle();
-        }
+        // // Nothing happens if the tile was already revealed.
+        // if (this.revealed === 3) {
+        //     return;
+        // // When there is a question mark on the tile, it is removed.
+        // } else if (this.revealed === 2) {
+        //     this.tileImageElement.hidden = true;
+        // // When there is a flag on the tile it is exchanged for a question mark.
+        // } else if (this.revealed === 1) {
+        //     this.tileImageElement.src = "static/assets/1600x1600/questionmark.png";
+        // // When the tile is not revealed yet:
+        // } else if (this.revealed === 0) {
+        //     if (((this.field.getMode() === 0) && leftClick)) {
+        //         console.log("Set flag!");
+        //     }
+        // }
+        // // If this is the first ever tile being clicked the game needs further setup.
+        // this.field.onClick(this);
+        // // Show this tiles contents.
+        // this.tileContentsElement.hidden = false;
     }
     amountMinesLeftRight() {
         return this.elementLeft.isMine() + this.elementRight.isMine();
