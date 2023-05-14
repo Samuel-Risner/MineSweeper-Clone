@@ -73,11 +73,11 @@ export class Stats {
         this.placedQuestionMarksDisplay.textContent = String(this.placedQuestionMarks);
     }
 
-    addMine(actualMine: boolean): number {
+    addFlag(actualMine: boolean): number {
         return this.changeMines(1, actualMine);
     }
 
-    removeMine(actualMine: boolean): number {
+    removeFlag(actualMine: boolean): number {
         return this.changeMines(-1, actualMine);
     }
 
