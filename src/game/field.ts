@@ -1,4 +1,5 @@
 import { GameSettings } from "./game_settings.js";
+import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 import { TileParent } from "./tile_parent.js";
@@ -27,6 +28,8 @@ export class Field {
      * All the tiles (inner and outer).
      */
     private allTiles: TileParent[][];
+
+    private stats: Stats;
     
     constructor(
         /**
@@ -52,6 +55,8 @@ export class Field {
         this.tiles = [];
         this.allTiles = [];
         this._createField();
+
+        this.stats = new Stats(this.amountMines);
     }
 
     /**
@@ -156,6 +161,7 @@ export class Field {
 
         this.firstClick = true;
         this._setMines(el.mayNotBeMine());
+        this.stats.startTimer();
     }
 
     getMode(): 0 | 1 {
