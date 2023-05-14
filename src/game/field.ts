@@ -52,11 +52,11 @@ export class Field {
 
         this.firstClick = false;
 
+        this.stats = new Stats(this.amountMines);
+
         this.tiles = [];
         this.allTiles = [];
         this._createField();
-
-        this.stats = new Stats(this.amountMines);
     }
 
     /**
