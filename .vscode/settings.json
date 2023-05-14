@@ -13,6 +13,7 @@
         "markdown",
         "latex",
         "plaintext",
-        "typescript"
+        "typescript",
+        "html"
     ]
 }
