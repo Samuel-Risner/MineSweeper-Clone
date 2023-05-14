@@ -48,10 +48,10 @@ export class Field {
         this.fieldTable = document.createElement("table");
         this.fieldContainer.appendChild(this.fieldTable);
         this.firstClick = false;
+        this.stats = new Stats(this.amountMines);
         this.tiles = [];
         this.allTiles = [];
         this._createField();
-        this.stats = new Stats(this.amountMines);
     }
     /**
      * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
