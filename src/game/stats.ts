@@ -21,8 +21,8 @@ export class Stats {
         this.placedQuestionMarks = 0;
 
         this.placedFlagsDisplay = document.getElementById("placedFlags") as HTMLSpanElement;
-        this.placedQuestionMarksDisplay = document.getElementById("amountMines") as HTMLSpanElement;
-        this.amountMinesDisplay = document.getElementById("amountQuestionMarks") as HTMLSpanElement;
+        this.placedQuestionMarksDisplay = document.getElementById("amountQuestionMarks") as HTMLSpanElement;
+        this.amountMinesDisplay = document.getElementById("amountMines") as HTMLSpanElement;
 
         this.placedFlagsDisplay.textContent = String(this.placedFlags);
         this.placedQuestionMarksDisplay.textContent = String(this.placedQuestionMarks);
