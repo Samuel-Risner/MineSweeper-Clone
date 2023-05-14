@@ -5,5 +5,13 @@
         "Risner",
         "tailwindcss",
         "venv"
+    ],
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
     ]
 }
