@@ -164,6 +164,11 @@ export class TileInner extends TileParent {
         if (this.revealed !== 0) {
             return;
         }
+        // If the tile is a mine:
+        if (this.mode === -1) {
+            this.setMine();
+            return;
+        }
         this.revealed = 3;
         this.tileContentsElement.hidden = false;
         this.lookRevealed();
@@ -303,7 +308,7 @@ export class TileInner extends TileParent {
                     }
                     else if (this.mode === -1) {
                         this.setMine();
-                        // TODO: end of game
+                        alert("GAME OVER!");
                         // When a number is on the tile, the number is revealed:
                     }
                     else {
@@ -313,18 +318,21 @@ export class TileInner extends TileParent {
                 }
                 else {
                     this.setFlag();
+                    this.stats.addFlag(this.mode === -1);
                 }
                 break;
             case 1: // If there is a question mark on the tile:
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), the tile is set to be not revealed:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setNotRevealed();
+                    this.stats.removeQuestionMark();
                 }
                 break;
             case 2: // If there is a flag on the tile:
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), a question mark is set:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setQuestionMark();
+                    this.stats.removeFlag(this.mode === -1);
                 }
                 break;
             case 3: // The tile is revealed:

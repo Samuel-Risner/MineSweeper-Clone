@@ -55,10 +55,10 @@ export class Stats {
         this.placedQuestionMarks += change;
         this.placedQuestionMarksDisplay.textContent = String(this.placedQuestionMarks);
     }
-    addMine(actualMine) {
+    addFlag(actualMine) {
         return this.changeMines(1, actualMine);
     }
-    removeMine(actualMine) {
+    removeFlag(actualMine) {
         return this.changeMines(-1, actualMine);
     }
     addQuestionMark() {
