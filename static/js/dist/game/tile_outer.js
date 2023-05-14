@@ -1,16 +1,20 @@
 import { TileParent } from "./tile_parent.js";
 export class TileOuter extends TileParent {
+    isFlag() {
+        return 0;
+    }
+    amountFlagsLeftRight() {
+        return 0;
+    }
     isMine() {
         return 0;
     }
-    onClick() { }
-    spread() { }
-    setNumber() { }
     amountMinesLeftRight() {
         return 0;
     }
-    spreadLeft() { }
-    spreadRight() { }
+    spread() { }
+    spreadX() { }
+    setNumber() { }
     addSelf(els) { }
     addXAndSelfElements(els) { }
 }
