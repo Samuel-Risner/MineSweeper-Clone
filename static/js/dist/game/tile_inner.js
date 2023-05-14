@@ -333,6 +333,7 @@ export class TileInner extends TileParent {
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setQuestionMark();
                     this.stats.removeFlag(this.mode === -1);
+                    this.stats.addQuestionMark();
                 }
                 break;
             case 3: // The tile is revealed:
