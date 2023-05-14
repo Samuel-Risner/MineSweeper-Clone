@@ -3,18 +3,18 @@ export class TileOuter extends TileParent {
     isFlag() {
         return 0;
     }
-    amountFlagsLeftRight() {
+    amountFlagsX() {
         return 0;
     }
     isMine() {
         return 0;
     }
-    amountMinesLeftRight() {
+    amountMinesX() {
         return 0;
     }
     spread() { }
     spreadX() { }
-    setNumber() { }
+    placeNumber() { }
     addSelf(els) { }
     addXAndSelfElements(els) { }
 }

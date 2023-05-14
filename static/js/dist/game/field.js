@@ -76,7 +76,7 @@ export class Field {
             for (let j = 0; j < this.width; j++) {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);
-                const t = new TileInner(outer, outer, outer, outer, cellElement, this);
+                const t = new TileInner(cellElement, outer, outer, outer, outer, this, this.stats);
                 row.push(t);
                 row2.push(t);
             }
@@ -113,14 +113,14 @@ export class Field {
                 continue;
             }
             // If the tile is already a mine:
-            if (!randomTile.setMine()) {
+            if (!randomTile.placeMine()) {
                 i--;
             }
         }
         // Set the numbers for the remaining tiles:
         for (let i = 0; i < this.tiles.length; i++) {
             for (let j = 0; j < this.tiles[i].length; j++) {
-                this.tiles[i][j].setNumber();
+                this.tiles[i][j].placeNumber();
             }
         }
     }
