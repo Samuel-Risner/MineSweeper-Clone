@@ -63,7 +63,7 @@
     </div>
 
     <div id="game" hidden>
-        <div class="bg-gray-400 fixed top-0 left-0 float h-10 flex w-full">
+        <div class="bg-gray-400 fixed top-0 left-0 w-screen flex p-1">
             <div class="m-auto">
                 <button id="changeClickMode" class="bg-neutral-600 p-1 rounded-xl flex flex-row">
                     <div id="revealTile" class="bg-neutral-300 rounded-lg p-1">Reveal Tile</div>
@@ -71,7 +71,9 @@
                 </button>
             </div>
         </div>
-        <div id="fieldContainer" class="mt-10"></div>
+        <div class="mt-12 w-screen overflow-scroll">
+            <div id="fieldContainer" class="w-screen overflow-scroll"></div>
+        </div>
     </div>
 </body>
 </html>
