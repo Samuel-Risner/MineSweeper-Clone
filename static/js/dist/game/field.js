@@ -1,3 +1,4 @@
+import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 export class Field {
@@ -25,6 +26,7 @@ export class Field {
      * All the tiles (inner and outer).
      */
     allTiles;
+    stats;
     constructor(
     /**
      * The width of the field.
@@ -49,6 +51,7 @@ export class Field {
         this.tiles = [];
         this.allTiles = [];
         this._createField();
+        this.stats = new Stats(this.amountMines);
     }
     /**
      * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
@@ -133,6 +136,7 @@ export class Field {
         }
         this.firstClick = true;
         this._setMines(el.mayNotBeMine());
+        this.stats.startTimer();
     }
     getMode() {
         return this.gameSettings.getMode();

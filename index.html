@@ -64,7 +64,7 @@
 
     <div id="game" hidden>
         <div class="bg-gray-400 fixed top-0 left-0 w-screen p-1 grid grid-cols-4 h-14">
-            <div class="m-auto">time</div>
+            <div class="m-auto" id="timer">00:00:00</div>
             <div class="m-auto col-span-2">
                 <button id="changeClickMode" class="bg-neutral-600 p-1 rounded-xl flex flex-row">
                     <div id="revealTile" class="bg-neutral-300 rounded-lg p-1">Reveal Tile</div>
@@ -72,7 +72,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-2 text-center h-fit">
-                <span><span id="foundMines">y</span>/<span id="amountMines">x</span></span>
+                <span><span id="placedFlags">y</span>/<span id="amountMines">x</span></span>
                 <span id="amountQuestionMarks">z</span>
                 Mines
                 <img src="static/assets/1600x1600/questionmark.png" class="w-4 m-auto">
