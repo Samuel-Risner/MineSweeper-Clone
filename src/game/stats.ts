@@ -38,7 +38,7 @@ export class Stats {
     }
 
     private highlightMines() {
-        this.placedFlagsDisplay.className = "text-red-600";
+        this.placedFlagsDisplay.className = "text-red-600 font-bold";
     }
 
     private unHighlightMines() {
