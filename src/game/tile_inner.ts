@@ -99,19 +99,20 @@ export class TileInner extends TileParent {
     }
 
     spread() {
-        // If the tile is already revealed or the tile contains a mine nothing happens.
-        if ((this.revealed !== 0) || (this.mode === -1)) {
+        // If the tile is already revealed nothing happens.
+        if (this.revealed !== 0) {
             return;
-        }
-
-        // If the tile contains a number its style is set.
-        if (this.mode > 0) {
-            this.setStyle();
         }
 
         this.revealed = 3;
         this.tileContentsElement.hidden = false;
         this.displayElement.className = "bg-neutral-300 w-10 aspect-square flex border-2 border-gray-400";
+
+        // If the tile contains a number its style is set.
+        if (this.mode > 0) {
+            this.setStyle();
+            return;
+        }
 
         this.elementTop.spread();
         this.elementLeft.spread();
