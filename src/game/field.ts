@@ -1,3 +1,4 @@
+import { Game } from "./../game.js";
 import { GameSettings } from "./game_settings.js";
 import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
@@ -32,6 +33,7 @@ export class Field {
     private stats: Stats;
     
     constructor(
+        game: Game,
         /**
          * The width of the field.
          */
@@ -56,13 +58,13 @@ export class Field {
 
         this.tiles = [];
         this.allTiles = [];
-        this._createField();
+        this._createField(game);
     }
 
     /**
      * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
      */
-    private _createField() {
+    private _createField(game: Game) {
         const outer = new TileOuter();
 
         // Top row with outer elements:
@@ -166,6 +168,14 @@ export class Field {
 
     getMode(): 0 | 1 {
         return this.gameSettings.getMode();
+    }
+
+    gameOver() {
+        for (const tileList of this.tiles) {
+            for (const tile of tileList) {
+                tile.forceReveal();
+            }
+        }
     }
 
 }

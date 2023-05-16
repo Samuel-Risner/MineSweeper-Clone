@@ -1,3 +1,4 @@
+import { Game } from "./../game.js";
 import { Field } from "./field.js";
 import { Stats } from "./stats.js";
 import { TileParent } from "./tile_parent.js";
@@ -45,7 +46,7 @@ export class TileInner extends TileParent {
         this.displayElement = document.createElement("button");
         this.tileContentsElement = document.createElement("div");
         this.tileImageElement = document.createElement("img");
-        this.setupElements(fieldElement);
+        this._setupElements(fieldElement);
 
         this.mode = 0;
         this.revealed = 0;
@@ -59,7 +60,7 @@ export class TileInner extends TileParent {
      * Appends the html elements together, adds the onclick events to them and stets their classnames using TailwindCSS.
      * @param fieldElement (Passed in the constructor.)
      */
-    private setupElements(fieldElement: HTMLTableCellElement) {
+    private _setupElements(fieldElement: HTMLTableCellElement) {
         fieldElement.appendChild(this.displayElement);
         this.displayElement.appendChild(this.tileContentsElement);
         this.displayElement.appendChild(this.tileImageElement);
@@ -198,6 +199,7 @@ export class TileInner extends TileParent {
         // If the tile is a mine:
         if (this.mode === -1) {
             this.setMine();
+            this.onMine();
             return;
         }
 
@@ -359,7 +361,7 @@ export class TileInner extends TileParent {
                     // If there is a mine on the tile the game is terminated:
                     } else if (this.mode === -1) {
                         this.setMine();
-                        alert("GAME OVER!");
+                        this.onMine();
                     
                     // When a number is on the tile, the number is revealed:
                     } else {
@@ -414,6 +416,16 @@ export class TileInner extends TileParent {
 
                 break;
         }
+    }
+
+    private onMine() {
+        this.field.gameOver();
+        alert("GAME OVER");
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    }
+
+    forceReveal() {
+
     }
 
 }
