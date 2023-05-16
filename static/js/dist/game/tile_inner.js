@@ -356,9 +356,22 @@ export class TileInner extends TileParent {
     }
     onMine() {
         this.field.gameOver();
-        alert("GAME OVER");
-        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }
     forceReveal() {
+        if (this.revealed === 3) {
+            return;
+        }
+        if (this.mode === -1) {
+            if (this.revealed !== 2) {
+                this.setMine();
+            }
+        }
+        else if (this.mode === 0) {
+            this.lookRevealed();
+        }
+        else {
+            this.setNumber();
+        }
+        this.displayElement.className = "bg-red-200 w-10 aspect-square flex border-2 border-gray-400";
     }
 }
