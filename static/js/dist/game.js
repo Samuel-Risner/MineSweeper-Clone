@@ -22,7 +22,7 @@ export class Game {
      * @param amountMines The amount of mines in the field.
      */
     newGame(width, height, amountMines) {
-        this.field = new Field(width, height, amountMines, this.gameSettings);
+        this.field = new Field(this, width, height, amountMines, this.gameSettings);
     }
     hide() {
         this.gameContainer.hidden = true;

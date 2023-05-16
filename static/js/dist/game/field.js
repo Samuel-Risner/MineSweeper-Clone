@@ -27,7 +27,7 @@ export class Field {
      */
     allTiles;
     stats;
-    constructor(
+    constructor(game, 
     /**
      * The width of the field.
      */
@@ -51,12 +51,12 @@ export class Field {
         this.stats = new Stats(this.amountMines);
         this.tiles = [];
         this.allTiles = [];
-        this._createField();
+        this._createField(game);
     }
     /**
      * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
      */
-    _createField() {
+    _createField(game) {
         const outer = new TileOuter();
         // Top row with outer elements:
         let row = [];
@@ -140,5 +140,12 @@ export class Field {
     }
     getMode() {
         return this.gameSettings.getMode();
+    }
+    gameOver() {
+        for (const tileList of this.tiles) {
+            for (const tile of tileList) {
+                tile.forceReveal();
+            }
+        }
     }
 }
