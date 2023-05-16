@@ -171,6 +171,8 @@ export class Field {
     }
 
     gameOver() {
+        this.stats.onGameOver();
+        
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();

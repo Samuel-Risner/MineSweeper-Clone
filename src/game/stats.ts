@@ -107,10 +107,14 @@ export class Stats {
         }, 1000);
     }
 
-    stopTimer() {
+    private stopTimer() {
         if (this.timerId !== null) {
             clearInterval(this.timerId);
             this.timerId = null;
         }
+    }
+
+    onGameOver() {
+        this.stopTimer();
     }
 }
