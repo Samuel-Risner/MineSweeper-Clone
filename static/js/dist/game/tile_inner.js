@@ -358,6 +358,8 @@ export class TileInner extends TileParent {
         this.field.gameOver();
     }
     forceReveal() {
+        this.displayElement.onclick = null;
+        this.displayElement.oncontextmenu = null;
         if (this.revealed === 3) {
             return;
         }
