@@ -142,6 +142,7 @@ export class Field {
         return this.gameSettings.getMode();
     }
     gameOver() {
+        this.stats.onGameOver();
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();

@@ -86,4 +86,7 @@ export class Stats {
             this.timerId = null;
         }
     }
+    onGameOver() {
+        this.stopTimer();
+    }
 }
