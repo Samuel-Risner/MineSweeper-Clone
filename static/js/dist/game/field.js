@@ -146,13 +146,20 @@ export class Field {
     onVictory() {
         this.resultPopup.onVictory(this.stats.getTimeDisplay());
     }
-    onDefeat() {
+    onDefeatLight() {
         this.stats.onGameOver();
+    }
+    onDefeat() {
+        this.onDefeatLight();
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();
             }
         }
         this.resultPopup.onDefeat(this.stats.getTimeDisplay());
+    }
+    remove() {
+        this.fieldTable.remove();
+        this.resultPopup.hide();
     }
 }

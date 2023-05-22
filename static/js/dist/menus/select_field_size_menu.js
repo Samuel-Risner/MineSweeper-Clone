@@ -87,6 +87,7 @@ export class SelectFieldSizeMenu {
         this.inputAmountMinesElement.value = String(1);
         this.closeGameButton = document.getElementById("closeGame");
         this.closeGameButton.onclick = () => {
+            this.game.onDefeat();
             this.show();
             this.game.hide();
         };
