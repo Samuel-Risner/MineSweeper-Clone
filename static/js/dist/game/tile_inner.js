@@ -353,9 +353,13 @@ export class TileInner extends TileParent {
                 }
                 break;
         }
+        const time = this.stats.isVictory();
+        if (time !== -1) {
+            this.field.onVictory();
+        }
     }
     onMine() {
-        this.field.gameOver();
+        this.field.onDefeat();
     }
     forceReveal() {
         this.displayElement.onclick = null;

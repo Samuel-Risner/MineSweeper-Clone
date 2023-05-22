@@ -1,5 +1,6 @@
 import { Field } from "./game/field.js";
 import { GameSettings } from "./game/game_settings.js";
+import { ResultPupup } from "./game/result_pupup.js";
 export class Game {
     /**
      * The html element which contains the game field.
@@ -10,10 +11,12 @@ export class Game {
      */
     field;
     gameSettings;
+    resultPopup;
     constructor() {
         this.gameContainer = document.getElementById("game");
         this.field = null;
         this.gameSettings = new GameSettings();
+        this.resultPopup = new ResultPupup();
     }
     /**
      * Creates a new field with the passed parameters.
@@ -22,7 +25,7 @@ export class Game {
      * @param amountMines The amount of mines in the field.
      */
     newGame(width, height, amountMines) {
-        this.field = new Field(this, width, height, amountMines, this.gameSettings);
+        this.field = new Field(this, width, height, amountMines, this.gameSettings, this.resultPopup);
     }
     hide() {
         this.gameContainer.hidden = true;

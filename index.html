@@ -64,7 +64,10 @@
 
     <div id="game" hidden>
         <div class="bg-gray-400 fixed top-0 left-0 w-screen p-1 grid grid-cols-4 h-14 text-sm">
-            <div class="m-auto" id="timer">00:00:00</div>
+            <div class="flex flex-row">
+                <button id="closeGame" class="p-1 rounded-md text-md">❌</button>
+                <div class="m-auto" id="timer">00:00:00</div>
+            </div>
             <div class="m-auto col-span-2">
                 <button id="changeClickMode" class="bg-neutral-600 p-1 rounded-xl flex flex-row">
                     <div id="revealTile" class="bg-neutral-300 rounded-lg p-1">Reveal Tile</div>
@@ -81,12 +84,16 @@
         <div class="mt-14 w-screen overflow-scroll">
             <div id="fieldContainer" class="w-screen overflow-scroll"></div>
         </div>
-        <div class="top-1/2 left-1/2 absolute">
-            <div>
-                Victory
+        <div class="absolute left-1/2 top-1/2">
+            <div hidden id="victoryPopup" class="bg-green-500 -left-1/2 relative p-2 rounded-lg text-center">
+                Victory!<br>
+                Spent time: <span name="spentTime">00:00:00</span>
             </div>
-            <div>
-                Game Over
+        </div>
+        <div class="absolute left-1/2 top-1/2">
+            <div hidden id="defeatPopup" class="bg-red-500 -left-1/2 relative p-2 rounded-lg text-center">
+                Defeat!<br>
+                Spent time: <span name="spentTime">00:00:00</span>
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@ export class SelectFieldSizeMenu {
     inputWidthElement;
     inputHeightElement;
     inputAmountMinesElement;
+    closeGameButton;
     constructor(game) {
         this.game = game;
         this.menuElement = document.getElementById("selectFieldSizeMenu");
@@ -84,6 +85,11 @@ export class SelectFieldSizeMenu {
         this.inputAmountMinesElement = document.getElementById("inputAmountMines");
         this.inputAmountMinesElement.min = String(settings.field.minAmountMines);
         this.inputAmountMinesElement.value = String(1);
+        this.closeGameButton = document.getElementById("closeGame");
+        this.closeGameButton.onclick = () => {
+            this.show();
+            this.game.hide();
+        };
     }
     _createSelectSizeButtons() {
         for (let i = 0; i < this.fieldSizes.length; i++) {

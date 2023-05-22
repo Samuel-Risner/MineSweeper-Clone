@@ -45,21 +45,16 @@ export class Stats {
         else {
             this.unHighlightMines();
         }
-        if ((this.foundMines === this.amountMines) && (this.placedQuestionMarks === 0)) {
-            this.stopTimer();
-            return this.spentTime;
-        }
-        return -1;
     }
     changeQuestionMarks(change) {
         this.placedQuestionMarks += change;
         this.placedQuestionMarksDisplay.textContent = String(this.placedQuestionMarks);
     }
     addFlag(actualMine) {
-        return this.changeMines(1, actualMine);
+        this.changeMines(1, actualMine);
     }
     removeFlag(actualMine) {
-        return this.changeMines(-1, actualMine);
+        this.changeMines(-1, actualMine);
     }
     addQuestionMark() {
         this.changeQuestionMarks(1);
@@ -88,5 +83,15 @@ export class Stats {
     }
     onGameOver() {
         this.stopTimer();
+    }
+    isVictory() {
+        if ((this.foundMines === this.amountMines) && (this.placedQuestionMarks === 0)) {
+            this.stopTimer();
+            return this.spentTime;
+        }
+        return -1;
+    }
+    getTimeDisplay() {
+        return this.timeDisplay.textContent;
     }
 }

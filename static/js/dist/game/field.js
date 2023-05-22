@@ -6,6 +6,7 @@ export class Field {
     height;
     amountMines;
     gameSettings;
+    resultPopup;
     /**
      * The html element in which "this.fieldTable" is displayed.
      */
@@ -39,11 +40,12 @@ export class Field {
     /**
      * The amount of mines in the field. (Value has to be disinfected before use.)
      */
-    amountMines, gameSettings) {
+    amountMines, gameSettings, resultPopup) {
         this.width = width;
         this.height = height;
         this.amountMines = amountMines;
         this.gameSettings = gameSettings;
+        this.resultPopup = resultPopup;
         this.fieldContainer = document.getElementById("fieldContainer");
         this.fieldTable = document.createElement("table");
         this.fieldContainer.appendChild(this.fieldTable);
@@ -141,12 +143,16 @@ export class Field {
     getMode() {
         return this.gameSettings.getMode();
     }
-    gameOver() {
+    onVictory() {
+        this.resultPopup.onVictory(this.stats.getTimeDisplay());
+    }
+    onDefeat() {
         this.stats.onGameOver();
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();
             }
         }
+        this.resultPopup.onDefeat(this.stats.getTimeDisplay());
     }
 }
