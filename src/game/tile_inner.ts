@@ -1,4 +1,3 @@
-import { Game } from "./../game.js";
 import { Field } from "./field.js";
 import { Stats } from "./stats.js";
 import { TileParent } from "./tile_parent.js";
@@ -416,10 +415,16 @@ export class TileInner extends TileParent {
 
                 break;
         }
+
+        const time = this.stats.isVictory();
+
+        if (time !== -1) {
+            this.field.onVictory();
+        }
     }
 
     private onMine() {
-        this.field.gameOver();
+        this.field.onDefeat();
     }
 
     forceReveal() {

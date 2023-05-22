@@ -1,5 +1,6 @@
 import { Game } from "./../game.js";
 import { GameSettings } from "./game_settings.js";
+import { ResultPupup } from "./result_pupup.js";
 import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
@@ -46,7 +47,8 @@ export class Field {
          * The amount of mines in the field. (Value has to be disinfected before use.)
          */
         private amountMines: number,
-        private gameSettings: GameSettings
+        private gameSettings: GameSettings,
+        private resultPopup: ResultPupup
     ) {
         this.fieldContainer = document.getElementById("fieldContainer") as HTMLDivElement;
         this.fieldTable = document.createElement("table");
@@ -170,7 +172,11 @@ export class Field {
         return this.gameSettings.getMode();
     }
 
-    gameOver() {
+    onVictory() {
+        this.resultPopup.onVictory(this.stats.getTimeDisplay());
+    }
+
+    onDefeat() {
         this.stats.onGameOver();
         
         for (const tileList of this.tiles) {
@@ -178,6 +184,8 @@ export class Field {
                 tile.forceReveal();
             }
         }
+
+        this.resultPopup.onDefeat(this.stats.getTimeDisplay());
     }
 
 }

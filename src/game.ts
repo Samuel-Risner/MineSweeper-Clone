@@ -1,5 +1,6 @@
 import { Field } from "./game/field.js";
 import { GameSettings } from "./game/game_settings.js";
+import { ResultPupup } from "./game/result_pupup.js";
 
 export class Game {
 
@@ -15,10 +16,13 @@ export class Game {
 
     private gameSettings: GameSettings;
 
+    private resultPopup: ResultPupup;
+
     constructor() {
         this.gameContainer = document.getElementById("game") as HTMLDivElement;
         this.field = null;
         this.gameSettings = new GameSettings();
+        this.resultPopup = new ResultPupup();
     }
 
     /**
@@ -28,7 +32,7 @@ export class Game {
      * @param amountMines The amount of mines in the field.
      */
     newGame(width: number, height: number, amountMines: number) {
-        this.field = new Field(this, width, height, amountMines, this.gameSettings);
+        this.field = new Field(this, width, height, amountMines, this.gameSettings, this.resultPopup);
     }
 
     hide() {

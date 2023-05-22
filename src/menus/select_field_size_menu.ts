@@ -19,6 +19,8 @@ export class SelectFieldSizeMenu {
     private inputHeightElement: HTMLInputElement;
     private inputAmountMinesElement: HTMLInputElement;
 
+    private closeGameButton: HTMLButtonElement;
+
     constructor(
         private game: Game
     ) {
@@ -104,6 +106,12 @@ export class SelectFieldSizeMenu {
         this.inputAmountMinesElement = document.getElementById("inputAmountMines") as HTMLInputElement;
         this.inputAmountMinesElement.min = String(settings.field.minAmountMines);
         this.inputAmountMinesElement.value = String(1);
+
+        this.closeGameButton = document.getElementById("closeGame") as HTMLButtonElement;
+        this.closeGameButton.onclick = () => {
+            this.show();
+            this.game.hide();
+        }
     }
 
     private _createSelectSizeButtons() {

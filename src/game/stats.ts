@@ -45,7 +45,7 @@ export class Stats {
         this.placedFlagsDisplay.className = "";
     }
 
-    private changeMines(change: 1 | -1, actualMine: boolean): number {
+    private changeMines(change: 1 | -1, actualMine: boolean) {
         this.placedFlags += change;
 
         if (actualMine) {
@@ -59,13 +59,6 @@ export class Stats {
         } else {
             this.unHighlightMines();
         }
-
-        if ((this.foundMines === this.amountMines) && (this.placedQuestionMarks === 0)) {
-            this.stopTimer();
-            return this.spentTime;
-        }
-
-        return -1;
     }
 
     private changeQuestionMarks(change: 1 | -1) {
@@ -73,12 +66,12 @@ export class Stats {
         this.placedQuestionMarksDisplay.textContent = String(this.placedQuestionMarks);
     }
 
-    addFlag(actualMine: boolean): number {
-        return this.changeMines(1, actualMine);
+    addFlag(actualMine: boolean) {
+        this.changeMines(1, actualMine);
     }
 
-    removeFlag(actualMine: boolean): number {
-        return this.changeMines(-1, actualMine);
+    removeFlag(actualMine: boolean) {
+        this.changeMines(-1, actualMine);
     }
 
     addQuestionMark() {
@@ -117,4 +110,18 @@ export class Stats {
     onGameOver() {
         this.stopTimer();
     }
+
+    isVictory(): number {
+        if ((this.foundMines === this.amountMines) && (this.placedQuestionMarks === 0)) {
+            this.stopTimer();
+            return this.spentTime;
+        }
+
+        return -1;
+    }
+
+    getTimeDisplay(): string {
+        return this.timeDisplay.textContent as string;
+    }
+
 }
