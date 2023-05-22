@@ -4,6 +4,7 @@ export class MainMenu {
     menuElement;
     goToSelectFieldSizeMenuButton;
     goToLeaderboardButton;
+    closeSelectFieldSizeMenuButton;
     constructor(selectFieldSizeMenu, leaderboard) {
         this.selectFieldSizeMenu = selectFieldSizeMenu;
         this.leaderboard = leaderboard;
@@ -17,6 +18,11 @@ export class MainMenu {
         this.goToLeaderboardButton.onclick = () => {
             this.hide();
             this.leaderboard.show();
+        };
+        this.closeSelectFieldSizeMenuButton = document.getElementById("closeSelectFieldSizeMenu");
+        this.closeSelectFieldSizeMenuButton.onclick = () => {
+            this.selectFieldSizeMenu.hide();
+            this.show();
         };
     }
     hide() {

@@ -528,6 +528,10 @@ video {
   position: relative;
 }
 
+.sticky {
+  position: sticky;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -554,6 +558,10 @@ video {
 
 .col-span-2 {
   grid-column: span 2 / span 2;
+}
+
+.float-left {
+  float: left;
 }
 
 .m-auto {
@@ -614,6 +622,14 @@ video {
   height: 50%;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -632,6 +648,10 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .grid-cols-1 {
@@ -774,6 +794,10 @@ video {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.pt-0 {
+  padding-top: 0px;
 }
 
 .text-center {
