@@ -32,6 +32,7 @@ export class Game {
      * @param amountMines The amount of mines in the field.
      */
     newGame(width: number, height: number, amountMines: number) {
+        this.field?.remove();
         this.field = new Field(this, width, height, amountMines, this.gameSettings, this.resultPopup);
     }
 
@@ -41,6 +42,10 @@ export class Game {
 
     show() {
         this.gameContainer.hidden = false;
+    }
+
+    onDefeat() {
+        this.field?.onDefeat();
     }
 
 }

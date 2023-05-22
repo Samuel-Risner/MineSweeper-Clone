@@ -109,6 +109,7 @@ export class SelectFieldSizeMenu {
 
         this.closeGameButton = document.getElementById("closeGame") as HTMLButtonElement;
         this.closeGameButton.onclick = () => {
+            this.game.onDefeat();
             this.show();
             this.game.hide();
         }
