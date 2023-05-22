@@ -14,7 +14,7 @@
  The "deploy" branch on the other hand contains all the files needed for displaying the page, but not the stuff for building it (eg. the TypeScript files).
 
 # Project Structure
- For compiling the stuff I cloned the "deploy" branch into the "build" branch. Meaning that there is a folder named "minesweeper-clone" containing all the stuff from the "deploy" branch. The folder is not tracked in this branch, since duplicate code sucks.
+ For compiling the stuff I cloned the "deploy" branch into the "build" branch. Meaning that there is a folder named "minesweeper-clone" containing all the stuff from the "deploy" branch. The folder is not tracked in the "build" branch, since duplicate code sucks.
  
 # Development (Windows cmd)
 
@@ -51,7 +51,7 @@
  ## Run the server for a second time
   Repeat steps 2, 4, 5 and 6.
 
- ## Install Node.js Stuff
+ ## Install Node.js stuff
   ```shell
    npm install -D
   ```
