@@ -8,6 +8,8 @@ export class MainMenu {
     private goToSelectFieldSizeMenuButton: HTMLButtonElement;
     private goToLeaderboardButton: HTMLButtonElement;
 
+    private closeSelectFieldSizeMenuButton: HTMLButtonElement;
+
     constructor(
         private selectFieldSizeMenu: SelectFieldSizeMenu,
         private leaderboard: Leaderboard
@@ -24,6 +26,12 @@ export class MainMenu {
         this.goToLeaderboardButton.onclick = () => {
             this.hide();
             this.leaderboard.show();
+        }
+
+        this.closeSelectFieldSizeMenuButton = document.getElementById("closeSelectFieldSizeMenu") as HTMLButtonElement;
+        this.closeSelectFieldSizeMenuButton.onclick = () => {
+            this.selectFieldSizeMenu.hide()
+            this.show();
         }
     }
 
