@@ -257,7 +257,7 @@ export class TileInner extends TileParent {
      * Sets the tile to display a question mark.
      */
     setQuestionMark() {
-        this.tileImageElement.src = "static/assets/1600x1600/questionmark.png";
+        this.tileImageElement.src = "static/assets/1600x1600/question_mark.png";
         this.tileImageElement.hidden = false;
         this.tileContentsElement.hidden = true;
         this.revealed = 1;
