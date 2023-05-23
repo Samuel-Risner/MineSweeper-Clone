@@ -9,37 +9,33 @@
     <script src="static/js/dist/index.js" type="module" defer></script>
 </head>
 <body>
-    <div id="mainMenu">
+    <!-- The main menu, it displays the buttons for going to the leaderboard and for going to the menu for selecting the game. -->
+    <span id="mainMenu">
         <div class="grid grid-cols-1 gap-8 p-8 text-5xl">
-
             <button id="goToSelectFieldSizeMenu" class="w-full aspect-square border-8">
-                <div class="m-auto">
-                    Play
-                </div>
+                <span class="m-auto">Play</span>
             </button>
-
             <button id="goToLeaderboard" class="w-full aspect-square border-8">
-                <div class="m-auto">
-                    Leaderboard
-                </div>
+                <span class="m-auto">Leaderboard</span>
             </button>
-
         </div>
-    </div>
+    </span>
 
-    <div id="selectFieldSizeMenu" hidden>
+    <!-- The menu for selecting the game size and the amount of mines. -->
+    <span id="selectFieldSizeMenu" hidden>
+        <!-- Button for closing this menu and returning to the main menu. -->
         <button id="closeSelectFieldSizeMenu" class="w-8 h-8 sticky top-0 left-0">❌</button>
 
+        <!-- Contains the different options for the size and the amount of mines. -->
         <div class="grid grid-cols-1 gap-8 p-8 pt-0 text-5xl">
+            <div id="selectSizeContainer" class="grid grid-cols-1 gap-8"><!-- Gets filled by js. --></div>
 
-            <div id="selectSizeContainer" class="grid grid-cols-1 gap-8"></div>
-
+            <!-- The button for showing the custom input fields. -->
             <button id="goToSelectCustomSize" class="w-full aspect-square border-8">
-                <div class="m-auto">
-                    Custom
-                </div>
+                <span class="m-auto">Custom</span>
             </button>
 
+            <!-- The custom input fields. -->
             <div id="selectCustomSize" hidden>
                 <div class="w-full aspect-square border-8 flex flex-col text-center text-2xl">
                     <label for="inputWidth" class="w-11/12 m-auto">Width:</label>
@@ -54,28 +50,29 @@
                     <button id="selectCustomSizeConfirm" class="m-auto">Confirm</button>
                 </div>
             </div>
-
         </div>
-    </div>
+    </span>
 
-    <div id="leaderboard" hidden>
-        <div>
-            leaderboard
-        </div>
-    </div>
+    <!-- Displays the leaderboard. -->
+    <span id="leaderboard" hidden><!-- TODO: leaderboard --></span>
 
-    <div id="game" hidden>
+    <!-- Displays the game. -->
+    <span id="game" hidden>
+        <!-- The tools menu at the top of the screen. -->
         <div class="bg-gray-400 fixed top-0 left-0 w-screen p-1 grid grid-cols-4 h-14 text-sm">
+            <!-- The button for closing and exiting the game and the time the user spent on the game. -->
             <div class="flex flex-row">
                 <button id="closeGame" class="p-1 rounded-md text-md">❌</button>
                 <div class="m-auto" id="timer">00:00:00</div>
             </div>
+            <!-- The buttons for switching between placing mines and revealing tiles. -->
             <div class="m-auto col-span-2">
                 <button id="changeClickMode" class="bg-neutral-600 p-1 rounded-xl flex flex-row">
                     <div id="revealTile" class="bg-neutral-300 rounded-lg p-1">Reveal Tile</div>
                     <div id="setFlag" class="rounded-lg p-1">Set Flag</div>
                 </button>
             </div>
+            <!-- Displays how many mines have been found and how many question marks have been set. -->
             <div class="grid grid-cols-2 text-center h-fit m-auto">
                 <span><span id="placedFlags">y</span>/<span id="amountMines">x</span></span>
                 <span id="amountQuestionMarks">z</span>
@@ -89,18 +86,17 @@
             <div class="m-2"><div id="fieldContainer"><!-- Gets filled by js. --></div></div>
         </div>
         
+        <!-- Displays the victory or defeat window. -->
         <div class="absolute left-1/2 top-1/2">
-            <div hidden id="victoryPopup" class="bg-green-500 -left-1/2 relative p-2 rounded-lg text-center">
-                Victory!<br>
-                Spent time: <span name="spentTime">00:00:00</span>
-            </div>
-        </div>
-        <div class="absolute left-1/2 top-1/2">
+            <!-- Displays the defeat window. -->
             <div hidden id="defeatPopup" class="bg-red-500 -left-1/2 relative p-2 rounded-lg text-center">
-                Defeat!<br>
-                Spent time: <span name="spentTime">00:00:00</span>
+                <span class="font-bold">Defeat!</span><br>Spent time: <span name="spentTime">00:00:00</span>
+            </div>
+            <!-- Displays the victory window. -->
+            <div hidden id="victoryPopup" class="bg-green-500 -left-1/2 relative p-2 rounded-lg text-center">
+                <span class="font-bold">Victory!</span><br>Spent time: <span name="spentTime">00:00:00</span>
             </div>
         </div>
-    </div>
+    </span>
 </body>
 </html>
