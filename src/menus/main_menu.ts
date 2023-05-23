@@ -1,5 +1,5 @@
 import { Leaderboard } from "../leaderboard.js";
-import { SelectFieldSizeMenu } from "./select_field_size_menu.js";
+import { SelectFieldMenu } from "./select_field_menu.js";
 
 export class MainMenu {
     
@@ -11,7 +11,7 @@ export class MainMenu {
     private closeSelectFieldSizeMenuButton: HTMLButtonElement;
 
     constructor(
-        private selectFieldSizeMenu: SelectFieldSizeMenu,
+        private selectFieldSizeMenu: SelectFieldMenu,
         private leaderboard: Leaderboard
     ) {
         this.menuElement = document.getElementById("mainMenu") as HTMLDivElement;

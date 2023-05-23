@@ -1,10 +1,10 @@
 export const field = {
     /**
-     * The minimum width the field has to have.
+     * The minimum width the field may have.
      */
     minWidth: 4,
     /**
-     * The minimum height the field has to have.
+     * The minimum height the field may have.
      */
     minHeight: 4,
     /**
@@ -16,7 +16,7 @@ export const field = {
      */
     maxHeight: 500,
     /**
-     * The minimum amount of mines the field has to have.
+     * The minimum amount of mines the field may have.
      */
     minAmountMines: 1,
     /**

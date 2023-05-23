@@ -100,7 +100,7 @@ export class Stats {
         }, 1000);
     }
 
-    private stopTimer() {
+    stopTimer() {
         if (this.timerId !== null) {
             clearInterval(this.timerId);
             this.timerId = null;
