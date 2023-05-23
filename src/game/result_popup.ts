@@ -1,4 +1,4 @@
-export class ResultPupup {
+export class ResultPopup {
 
     private spentTimeElements: NodeListOf<HTMLElement>;
 

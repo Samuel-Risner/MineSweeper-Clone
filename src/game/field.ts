@@ -1,6 +1,6 @@
 import { Game } from "./../game.js";
 import { GameSettings } from "./game_settings.js";
-import { ResultPupup } from "./result_pupup.js";
+import { ResultPopup } from "./result_popup.js";
 import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
@@ -48,7 +48,7 @@ export class Field {
          */
         private amountMines: number,
         private gameSettings: GameSettings,
-        private resultPopup: ResultPupup
+        private resultPopup: ResultPopup
     ) {
         this.fieldContainer = document.getElementById("fieldContainer") as HTMLDivElement;
         this.fieldTable = document.createElement("table");
