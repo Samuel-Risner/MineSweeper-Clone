@@ -1,6 +1,6 @@
 import { Field } from "./game/field.js";
 import { GameSettings } from "./game/game_settings.js";
-import { ResultPupup } from "./game/result_pupup.js";
+import { ResultPopup } from "./game/result_popup.js";
 export class Game {
     /**
      * The html element which contains the game field.
@@ -16,7 +16,7 @@ export class Game {
         this.gameContainer = document.getElementById("game");
         this.field = null;
         this.gameSettings = new GameSettings();
-        this.resultPopup = new ResultPupup();
+        this.resultPopup = new ResultPopup();
     }
     /**
      * Creates a new field with the passed parameters.
