@@ -83,9 +83,12 @@
                 <img src="static/assets/1600x1600/questionmark.png" class="w-4 m-auto">
             </div>
         </div>
-        <div class="mt-14 w-screen overflow-scroll">
-            <div id="fieldContainer" class="w-screen overflow-scroll"></div>
+
+        <!-- Displays the game field. -->
+        <div class="mt-14 w-screen overflow-scroll flex">
+            <div class="m-2"><div id="fieldContainer"><!-- Gets filled by js. --></div></div>
         </div>
+        
         <div class="absolute left-1/2 top-1/2">
             <div hidden id="victoryPopup" class="bg-green-500 -left-1/2 relative p-2 rounded-lg text-center">
                 Victory!<br>
