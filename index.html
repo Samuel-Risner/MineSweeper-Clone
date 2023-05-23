@@ -22,13 +22,13 @@
     </span>
 
     <!-- The menu for selecting the game size and the amount of mines. -->
-    <span id="selectFieldSizeMenu" hidden>
+    <span id="selectFieldMenu" hidden>
         <!-- Button for closing this menu and returning to the main menu. -->
         <button id="closeSelectFieldSizeMenu" class="w-8 h-8 sticky top-0 left-0">❌</button>
 
         <!-- Contains the different options for the size and the amount of mines. -->
         <div class="grid grid-cols-1 gap-8 p-8 pt-0 text-5xl">
-            <div id="selectSizeContainer" class="grid grid-cols-1 gap-8"><!-- Gets filled by js. --></div>
+            <div id="selectFieldOptionContainer" class="grid grid-cols-1 gap-8"><!-- Gets filled by js. --></div>
 
             <!-- The button for showing the custom input fields. -->
             <button id="goToSelectCustomSize" class="w-full aspect-square border-8">
@@ -36,18 +36,18 @@
             </button>
 
             <!-- The custom input fields. -->
-            <div id="selectCustomSize" hidden>
+            <div id="selectCustomOption" hidden>
                 <div class="w-full aspect-square border-8 flex flex-col text-center text-2xl">
-                    <label for="inputWidth" class="w-11/12 m-auto">Width:</label>
-                    <input id="inputWidth" type="number" class="w-11/12 m-auto border-4">
+                    <label for="inputCustomWidth" class="w-11/12 m-auto">Width:</label>
+                    <input id="inputCustomWidth" type="number" class="w-11/12 m-auto border-4">
 
-                    <label for="inputHeight"  class="w-11/12 m-auto">Height:</label>
-                    <input id="inputHeight" type="number" class="w-11/12 m-auto border-4">
+                    <label for="inputCustomHeight"  class="w-11/12 m-auto">Height:</label>
+                    <input id="inputCustomHeight" type="number" class="w-11/12 m-auto border-4">
 
-                    <label for="inputAmountMines"  class="w-11/12 m-auto">Amount Mines:</label>
-                    <input id="inputAmountMines" type="number" class="w-11/12 m-auto border-4">
+                    <label for="inputCustomAmountMines"  class="w-11/12 m-auto">Amount Mines:</label>
+                    <input id="inputCustomAmountMines" type="number" class="w-11/12 m-auto border-4">
 
-                    <button id="selectCustomSizeConfirm" class="m-auto">Confirm</button>
+                    <button id="selectCustomOptionConfirm" class="m-auto">Confirm</button>
                 </div>
             </div>
         </div>

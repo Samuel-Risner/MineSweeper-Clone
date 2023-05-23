@@ -162,4 +162,11 @@ export class Field {
         this.fieldTable.remove();
         this.resultPopup.hide();
     }
+    /**
+     * What the game does when the close game button is pressed:
+     *  - stops the game timer
+     */
+    onCloseButton() {
+        this.stats.stopTimer();
+    }
 }

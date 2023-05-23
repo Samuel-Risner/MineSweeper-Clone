@@ -19,7 +19,7 @@ export class Game {
         this.resultPopup = new ResultPopup();
     }
     /**
-     * Creates a new field with the passed parameters.
+     * Creates a new field with the passed parameters and deletes the old one.
      * @param width The width of the field.
      * @param height The height of the field.
      * @param amountMines The amount of mines in the field.
@@ -28,13 +28,17 @@ export class Game {
         this.field?.remove();
         this.field = new Field(this, width, height, amountMines, this.gameSettings, this.resultPopup);
     }
+    /**
+     * What the game does when the close game button is pressed:
+     *  - stops the game timer
+     */
+    onCloseButton() {
+        this.field?.onCloseButton();
+    }
     hide() {
         this.gameContainer.hidden = true;
     }
     show() {
         this.gameContainer.hidden = false;
-    }
-    onDefeat() {
-        this.field?.onDefeat();
     }
 }
