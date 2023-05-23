@@ -1,6 +1,6 @@
 import { Field } from "./game/field.js";
 import { GameSettings } from "./game/game_settings.js";
-import { ResultPupup } from "./game/result_pupup.js";
+import { ResultPopup } from "./game/result_popup.js";
 
 export class Game {
 
@@ -16,13 +16,13 @@ export class Game {
 
     private gameSettings: GameSettings;
 
-    private resultPopup: ResultPupup;
+    private resultPopup: ResultPopup;
 
     constructor() {
         this.gameContainer = document.getElementById("game") as HTMLDivElement;
         this.field = null;
         this.gameSettings = new GameSettings();
-        this.resultPopup = new ResultPupup();
+        this.resultPopup = new ResultPopup();
     }
 
     /**
