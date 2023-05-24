@@ -1,4 +1,5 @@
 import { TileParent } from "./tile_parent.js";
+import { settings } from "../settings.js";
 export class TileInner extends TileParent {
     elementTop;
     elementLeft;
@@ -57,7 +58,7 @@ export class TileInner extends TileParent {
         fieldElement.appendChild(this.displayElement);
         this.displayElement.appendChild(this.tileContentsElement);
         this.displayElement.appendChild(this.tileImageElement);
-        this.displayElement.className = "bg-neutral-500 w-10 aspect-square flex border-2 border-gray-400";
+        this.displayElement.className = settings.tile.styles.default;
         this.tileContentsElement.className = "m-auto";
         this.tileContentsElement.hidden = true;
         this.tileImageElement.hidden = true;
@@ -211,7 +212,7 @@ export class TileInner extends TileParent {
      * Sets the tile to have a lighter background color, indicating that it is revealed.
      */
     lookRevealed() {
-        this.displayElement.className = "bg-neutral-300 w-10 aspect-square flex border-2 border-gray-400";
+        this.displayElement.className = settings.tile.styles.revealed;
     }
     /**
      * Sets the color for the number/text for the tiles number.
@@ -219,28 +220,28 @@ export class TileInner extends TileParent {
     setStyle() {
         switch (this.mode) {
             case 1:
-                this.tileContentsElement.className = "text-blue-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-blue-500 m-auto";
                 break;
             case 2:
-                this.tileContentsElement.className = "text-green-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-green-500 m-auto";
                 break;
             case 3:
-                this.tileContentsElement.className = "text-red-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-red-500 m-auto";
                 break;
             case 4:
-                this.tileContentsElement.className = "text-purple-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-purple-500 m-auto";
                 break;
             case 5:
-                this.tileContentsElement.className = "text-maroon-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-maroon-500 m-auto";
                 break;
             case 6:
-                this.tileContentsElement.className = "text-turquoise-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-turquoise-500 m-auto";
                 break;
             case 7:
-                this.tileContentsElement.className = "text-black m-auto text-xl";
+                this.tileContentsElement.className = "text-black m-auto";
                 break;
             case 8:
-                this.tileContentsElement.className = "text-gray-500 m-auto text-xl";
+                this.tileContentsElement.className = "text-gray-500 m-auto";
                 break;
         }
     }
@@ -279,7 +280,7 @@ export class TileInner extends TileParent {
         this.tileImageElement.hidden = false;
         this.tileContentsElement.hidden = true;
         this.revealed = 3;
-        this.displayElement.className = "bg-red-600 w-10 aspect-square flex border-2 border-gray-400";
+        this.displayElement.className = settings.tile.styles.mine;
     }
     /**
      * Sets the tile to display its number.
@@ -378,6 +379,6 @@ export class TileInner extends TileParent {
         else {
             this.setNumber();
         }
-        this.displayElement.className = "bg-red-200 w-10 aspect-square flex border-2 border-gray-400";
+        this.displayElement.className = settings.tile.styles.wrongGuess;
     }
 }
