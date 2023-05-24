@@ -621,10 +621,6 @@ video {
   width: 100vw;
 }
 
-.touch-none {
-  touch-action: none;
-}
-
 .touch-manipulation {
   touch-action: manipulation;
 }
