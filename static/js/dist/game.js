@@ -26,12 +26,8 @@ export class Game {
      */
     newGame(width, height, amountMines) {
         this.field?.remove();
-        this.field = new Field(this, width, height, amountMines, this.gameSettings, this.resultPopup);
+        this.field = new Field(width, height, amountMines, this.gameSettings, this.resultPopup);
     }
-    /**
-     * What the game does when the close game button is pressed:
-     *  - stops the game timer
-     */
     onCloseButton() {
         this.field?.onCloseButton();
     }

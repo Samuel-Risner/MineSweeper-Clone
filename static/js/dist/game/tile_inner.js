@@ -1,5 +1,5 @@
 import { TileParent } from "./tile_parent.js";
-import { settings } from "../settings.js";
+import { settings } from "./../settings.js";
 export class TileInner extends TileParent {
     elementTop;
     elementLeft;
@@ -51,7 +51,7 @@ export class TileInner extends TileParent {
     // - Setup functions
     //
     /**
-     * Appends the html elements together, adds the onclick events to them and stets their classnames using TailwindCSS.
+     * Appends the html elements together, adds the onclick events to them and stets their class names using TailwindCSS.
      * @param fieldElement (Passed in the constructor.)
      */
     _setupElements(fieldElement) {

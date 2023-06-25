@@ -524,10 +524,6 @@ video {
   position: relative;
 }
 
-.sticky {
-  position: sticky;
-}
-
 .-left-1\/2 {
   left: -50%;
 }
@@ -584,10 +580,6 @@ video {
   height: 3.5rem;
 }
 
-.h-8 {
-  height: 2rem;
-}
-
 .h-fit {
   height: -moz-fit-content;
   height: fit-content;
@@ -601,16 +593,8 @@ video {
   width: 91.666667%;
 }
 
-.w-20 {
-  width: 5rem;
-}
-
 .w-4 {
   width: 1rem;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .w-full {
@@ -647,14 +631,6 @@ video {
 
 .gap-8 {
   gap: 2rem;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-scroll {
-  overflow: scroll;
 }
 
 .whitespace-pre-line {
@@ -752,10 +728,6 @@ video {
   padding-bottom: 5rem;
 }
 
-.pt-0 {
-  padding-top: 0px;
-}
-
 .text-center {
   text-align: center;
 }
@@ -820,14 +792,6 @@ video {
 }
 
 @media (min-width: 640px) {
-  .sm\:aspect-video {
-    aspect-ratio: 16 / 9;
-  }
-
-  .sm\:w-14 {
-    width: 3.5rem;
-  }
-
   .sm\:w-16 {
     width: 4rem;
   }
@@ -841,6 +805,11 @@ video {
     padding-right: 4rem;
   }
 
+  .sm\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
   .sm\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
@@ -850,40 +819,12 @@ video {
     font-size: 1.125rem;
     line-height: 1.75rem;
   }
-
-  .sm\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  .sm\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  .sm\:text-red-500 {
-    --tw-text-opacity: 1;
-    color: rgb(239 68 68 / var(--tw-text-opacity));
-  }
 }
 
 @media (min-width: 768px) {
-  .md\:aspect-square {
-    aspect-ratio: 1 / 1;
-  }
-
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .md\:px-24 {
     padding-left: 6rem;
     padding-right: 6rem;
-  }
-
-  .md\:text-red-500 {
-    --tw-text-opacity: 1;
-    color: rgb(239 68 68 / var(--tw-text-opacity));
   }
 }
 
@@ -908,25 +849,8 @@ video {
     padding: 0.5rem;
   }
 
-  .lg\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
   .lg\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
-  }
-
-  .lg\:text-red-500 {
-    --tw-text-opacity: 1;
-    color: rgb(239 68 68 / var(--tw-text-opacity));
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:text-red-500 {
-    --tw-text-opacity: 1;
-    color: rgb(239 68 68 / var(--tw-text-opacity));
   }
 }

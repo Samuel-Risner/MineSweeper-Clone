@@ -15,32 +15,11 @@ export class Field {
      * The html element which contains all the tiles the user can interact with.
      */
     fieldTable;
-    /**
-     * If the user already made their first click or not.
-     */
-    firstClick;
-    /**
-     * All the inner tiles.
-     */
+    firstClickHappened;
     tiles;
-    /**
-     * All the tiles (inner and outer).
-     */
     allTiles;
     stats;
-    constructor(game, 
-    /**
-     * The width of the field.
-     */
-    width, 
-    /**
-     * The height of the field.
-     */
-    height, 
-    /**
-     * The amount of mines in the field. (Value has to be disinfected before use.)
-     */
-    amountMines, gameSettings, resultPopup) {
+    constructor(width, height, amountMines, gameSettings, resultPopup) {
         this.width = width;
         this.height = height;
         this.amountMines = amountMines;
@@ -49,16 +28,13 @@ export class Field {
         this.fieldContainer = document.getElementById("fieldContainer");
         this.fieldTable = document.createElement("table");
         this.fieldContainer.appendChild(this.fieldTable);
-        this.firstClick = false;
+        this.firstClickHappened = false;
         this.stats = new Stats(this.amountMines);
         this.tiles = [];
         this.allTiles = [];
-        this._createField(game);
+        this.createField();
     }
-    /**
-     * Creates all the tiles, fills "this.tiles" and "this.allTiles" and links the individual tiles together.
-     */
-    _createField(game) {
+    createField() {
         const outer = new TileOuter();
         // Top row with outer elements:
         let row = [];
@@ -105,7 +81,7 @@ export class Field {
      * Sets the mines in the field and the numbers for the other tiles.
      * @param doNotSetToMines A list with tiles that may not be set to mines.
      */
-    _setMines(doNotSetToMines) {
+    setTileContents(doNotSetToMines) {
         for (let i = 0; i < this.amountMines; i++) {
             const randomRow = this.tiles[Math.floor(Math.random() * this.tiles.length)];
             const randomTile = randomRow[Math.floor(Math.random() * randomRow.length)];
@@ -129,15 +105,14 @@ export class Field {
     /**
      * This function is always called when the user clicks on a tile.
      * But only when the first ever click on a tile is made something relevant happens: The field is initialized.
-     * @param el
-     * @returns
+     * @param el The tile that was clicked.
      */
     onClick(el) {
-        if (this.firstClick) {
+        if (this.firstClickHappened) {
             return;
         }
-        this.firstClick = true;
-        this._setMines(el.mayNotBeMine());
+        this.firstClickHappened = true;
+        this.setTileContents(el.mayNotBeMine());
         this.stats.startTimer();
     }
     getMode() {
