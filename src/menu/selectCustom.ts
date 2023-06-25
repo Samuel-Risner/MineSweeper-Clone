@@ -1,62 +1,31 @@
-import { Game } from "./game.js";
-import { settings } from "./settings.js";
+import { Menu } from "./menu.js";
+import { settings } from "./../settings.js";
 
-export class Menu {
+export class SelectCustom {
+
+    private showInputsButton: HTMLButtonElement;
     
-    /**
-     * The html element which contains all the things connected to this menu.
-     */
-    private menuElement: HTMLDivElement;
+    private inputContainerElement: HTMLDivElement;
 
-    /**
-     * The html element which will be filled with default field options (from this.fieldOptions).
-     */
-    private selectOptionContainer: HTMLDivElement;
-    /**
-     * The default options for creating a field.
-     * 
-     * width, height, amount mines
-     */
-    private fieldOptions: [number, number, number][];
-
-    /**
-     * The button which has to be clicked to show the input for the custom options.
-     */
-    private goToSelectCustomSizeButton: HTMLButtonElement;
-    /**
-     * The html element which contains the custom options.
-     */
-    private selectCustomOptionElement: HTMLDivElement;
-    /**
-     * The button which has to be clicked to use the custom options.
-     */
-    private confirmCustomOptionButton: HTMLButtonElement;
+    private confirmCustomSizeButton: HTMLButtonElement;
 
     private inputCustomWidthElement: HTMLInputElement;
     private inputCustomHeightElement: HTMLInputElement;
     private inputCustomAmountMinesElement: HTMLInputElement;
 
     constructor(
-        private game: Game
+        private menu: Menu
     ) {
-        this.menuElement = document.getElementById("selectFieldMenu") as HTMLDivElement;
-
-        this.selectOptionContainer = document.getElementById("selectFieldOptionContainer") as HTMLDivElement;
-        this.fieldOptions = [
-            [8, 8, 8],
-            [16, 16, 32],
-            [32, 16, 64]
-        ];
-        this._createSelectSizeButtons();
-
-        this.goToSelectCustomSizeButton = document.getElementById("goToSelectCustomSize") as HTMLButtonElement;
-        this.goToSelectCustomSizeButton.onclick = () => {
-            this.goToSelectCustomSizeButton.hidden = true;
-            this.selectCustomOptionElement.hidden = false;
+        this.showInputsButton = document.getElementById("showSelectCustomSizeInputs") as HTMLButtonElement;
+        this.showInputsButton.onclick = () => {
+            this.showInputsButton.hidden = true;
+            this.inputContainerElement.hidden = false;
         }
-        this.selectCustomOptionElement = document.getElementById("selectCustomOption") as HTMLDivElement;
-        this.confirmCustomOptionButton = document.getElementById("selectCustomOptionConfirm") as HTMLButtonElement;
-        this._addOnclickSelectCustomSize();
+
+        this.inputContainerElement = document.getElementById("customInputContainerElement") as HTMLDivElement;
+
+        this.confirmCustomSizeButton = document.getElementById("confirmCustomSize") as HTMLButtonElement;
+        this.addOnclick();
 
         this.inputCustomWidthElement = document.getElementById("inputCustomWidth") as HTMLInputElement;
         this.inputCustomWidthElement.min = String(settings.field.minWidth);
@@ -73,35 +42,8 @@ export class Menu {
         this.inputCustomAmountMinesElement.value = String(1);
     }
 
-    /**
-     * Creates the buttons for selecting the default field options.
-     */
-    private _createSelectSizeButtons() {
-        for (let i = 0; i < this.fieldOptions.length; i++) {
-            const button = document.createElement("button");
-            const div = document.createElement("div");
-
-            button.className = "w-full aspect-square border-8";
-
-            div.textContent = `${this.fieldOptions[i][0]}x${this.fieldOptions[i][1]}\nMines: ${this.fieldOptions[i][2]}`;
-            div.className = "m-auto whitespace-pre-line";
-
-            button.appendChild(div);
-            this.selectOptionContainer.appendChild(button);
-
-            button.onclick = () => {
-                this.game.newGame(this.fieldOptions[i][0], this.fieldOptions[i][1], this.fieldOptions[i][2]);
-                this.hide();
-                this.game.show();
-            }
-        }
-    }
-
-    /**
-     * Adds the onclick event for this.confirmCustomOptionButton.
-     */
-    private _addOnclickSelectCustomSize() {
-        this.confirmCustomOptionButton.onclick = () => {
+    private addOnclick() {
+        this.confirmCustomSizeButton.onclick = () => {
             const width = Number(this.inputCustomWidthElement.value);
             const height = Number(this.inputCustomHeightElement.value);
             const amountMines = Number(this.inputCustomAmountMinesElement.value);
@@ -148,18 +90,8 @@ export class Menu {
                 return;
             }
 
-            this.game.newGame(width, height, amountMines);
-            this.hide();
-            this.game.show();
+            this.menu.newGame(width, height, amountMines);
         }
-    }
-
-    hide() {
-        this.menuElement.hidden = true;
-    }
-
-    show() {
-        this.menuElement.hidden = false;
     }
 
 }

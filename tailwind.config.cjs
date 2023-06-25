@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./minesweeper-clone/static/js/dist/**/*.js", "./minesweeper-clone/index.html"],
+  content: ["./minesweeper-clone/index.html", "./src/**/*.ts"],
   theme: {
     extend: {},
   },

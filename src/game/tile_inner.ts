@@ -1,7 +1,7 @@
 import { Field } from "./field.js";
 import { Stats } from "./stats.js";
 import { TileParent } from "./tile_parent.js";
-import { settings } from "../settings.js";
+import { settings } from "./../settings.js";
 
 export class TileInner extends TileParent {
 
@@ -57,7 +57,7 @@ export class TileInner extends TileParent {
     //
 
     /**
-     * Appends the html elements together, adds the onclick events to them and stets their classnames using TailwindCSS.
+     * Appends the html elements together, adds the onclick events to them and stets their class names using TailwindCSS.
      * @param fieldElement (Passed in the constructor.)
      */
     private _setupElements(fieldElement: HTMLTableCellElement) {

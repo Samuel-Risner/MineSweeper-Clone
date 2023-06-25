@@ -15,5 +15,8 @@
         "latex",
         "plaintext",
         "typescript"
-    ]
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
 }
