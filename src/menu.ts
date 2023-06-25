@@ -1,7 +1,7 @@
-import { Game } from "./../game.js";
-import { settings } from "./../settings.js";
+import { Game } from "./game.js";
+import { settings } from "./settings.js";
 
-export class SelectFieldMenu {
+export class Menu {
     
     /**
      * The html element which contains all the things connected to this menu.
@@ -35,11 +35,6 @@ export class SelectFieldMenu {
     private inputCustomWidthElement: HTMLInputElement;
     private inputCustomHeightElement: HTMLInputElement;
     private inputCustomAmountMinesElement: HTMLInputElement;
-
-    /**
-     * When the game is active this button can be pressed to return to this menu.
-     */
-    private closeGameButton: HTMLButtonElement;
 
     constructor(
         private game: Game
@@ -76,13 +71,6 @@ export class SelectFieldMenu {
         this.inputCustomAmountMinesElement = document.getElementById("inputCustomAmountMines") as HTMLInputElement;
         this.inputCustomAmountMinesElement.min = String(settings.field.minAmountMines);
         this.inputCustomAmountMinesElement.value = String(1);
-
-        this.closeGameButton = document.getElementById("closeGame") as HTMLButtonElement;
-        this.closeGameButton.onclick = () => {
-            this.game.onCloseButton();
-            this.show();
-            this.game.hide();
-        }
     }
 
     /**
