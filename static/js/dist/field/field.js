@@ -1,4 +1,4 @@
-import { Stats } from "./stats.js";
+import { Stats } from "../game/stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 export class Field {

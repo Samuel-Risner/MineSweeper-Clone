@@ -1,4 +1,4 @@
-import { Field } from "./game/field.js";
+import { Field } from "./field/index.js";
 import { GameSettings } from "./game/game_settings.js";
 import { ResultPopup } from "./game/result_popup.js";
 export class Game {

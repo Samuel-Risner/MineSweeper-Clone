@@ -1,5 +1,5 @@
-import { settings } from "./../settings.js";
-export function selectCustom(menu) {
+import { settings } from "../settings.js";
+export default function initCustom(menu) {
     const inputContainerElement = document.getElementById("customInputContainerElement");
     const showInputsButton = document.getElementById("showSelectCustomSizeInputs");
     const inputCustomWidthElement = document.getElementById("inputCustomWidth");

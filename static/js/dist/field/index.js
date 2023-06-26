@@ -1,35 +1,22 @@
-import { Stats } from "./stats.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 export class Field {
     width;
     height;
     amountMines;
-    gameSettings;
-    resultPopup;
-    /**
-     * The html element in which "this.fieldTable" is displayed.
-     */
-    fieldContainer;
-    /**
-     * The html element which contains all the tiles the user can interact with.
-     */
-    fieldTable;
+    container;
+    table;
     firstClickHappened;
     tiles;
     allTiles;
-    stats;
-    constructor(width, height, amountMines, gameSettings, resultPopup) {
+    constructor(width, height, amountMines) {
         this.width = width;
         this.height = height;
         this.amountMines = amountMines;
-        this.gameSettings = gameSettings;
-        this.resultPopup = resultPopup;
-        this.fieldContainer = document.getElementById("fieldContainer");
-        this.fieldTable = document.createElement("table");
-        this.fieldContainer.appendChild(this.fieldTable);
+        this.container = document.getElementById("fieldContainer");
+        this.table = document.createElement("table");
+        this.container.appendChild(this.table);
         this.firstClickHappened = false;
-        this.stats = new Stats(this.amountMines);
         this.tiles = [];
         this.allTiles = [];
         this.createField();
@@ -50,7 +37,7 @@ export class Field {
             const row2 = [];
             this.tiles.push(row2);
             const rowElement = document.createElement("tr");
-            this.fieldTable.appendChild(rowElement);
+            this.table.appendChild(rowElement);
             for (let j = 0; j < this.width; j++) {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);

@@ -1,5 +1,6 @@
 export class Stats {
     amountMines;
+    closeGameButton;
     timeDisplay;
     timerId;
     startTime;
@@ -12,6 +13,10 @@ export class Stats {
     placedQuestionMarks;
     constructor(amountMines) {
         this.amountMines = amountMines;
+        this.closeGameButton = document.getElementById("closeGame");
+        this.closeGameButton.onclick = () => {
+            this.stopTimer();
+        };
         this.placedFlags = 0;
         this.placedQuestionMarks = 0;
         this.placedFlagsDisplay = document.getElementById("placedFlags");
