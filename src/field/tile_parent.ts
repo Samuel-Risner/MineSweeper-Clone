@@ -6,7 +6,6 @@ export abstract class TileParent {
     abstract amountFlagsX(): 0 | 1 | 2;
     abstract isMine(): 0 | 1;
     abstract amountMinesX(): 0 | 1 | 2;
-
     abstract spread(): void;
     abstract spreadX(): void;
     abstract placeNumber(): void;

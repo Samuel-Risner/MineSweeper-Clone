@@ -2,14 +2,10 @@ import { Field } from "./index.js";
 import { TileParent } from "./tile_parent.js";
 import { settings } from "./../settings.js";
 import { Revealed, Contents } from "./enums.js";
+import Stats from "../stats.js";
 
 export class TileInner extends TileParent {
 
-    /**
-     * `-1` -> mine;
-     * `0` -> empty;
-     * `1` to `8` -> corresponding numbers
-     */
     private contents: Contents;
     private revealed: Revealed;
 
@@ -32,17 +28,18 @@ export class TileInner extends TileParent {
         private elementLeft: TileParent,
         private elementBottom: TileParent,
         private elementRight: TileParent,
-        private field: Field
+        private field: Field,
+        private stats: Stats
     ) {
         super();
+
+        this.contents = Contents.EMPTY;
+        this.revealed = Revealed.NOT;
 
         this.colorElement = document.createElement("button");
         this.numberElement = document.createElement("div");
         this.imageElement = document.createElement("img");
         this.setupElements(tableCellElement);
-
-        this.contents = Contents.EMPTY;
-        this.revealed = Revealed.NOT;
     }
 
     //
@@ -189,8 +186,6 @@ export class TileInner extends TileParent {
         }
 
         if (this.contents === Contents.MINE) {
-            this.setMine();
-            this.onMine();
             return;
         }
 
@@ -235,7 +230,7 @@ export class TileInner extends TileParent {
     }
 
     //
-    // - Functions connected to TailwindCSS
+    // - Functions connected to appearance
     //
 
     /**
@@ -315,7 +310,7 @@ export class TileInner extends TileParent {
         this.field.onClick(this);
 
         switch (this.revealed) {
-            case Revealed.NOT: // If the tile is not revealed yet and no question mark or flag is on it:
+            case Revealed.NOT:
 
                 // If the tile should be revealed (the mode is in "reveal tile" and the user clicked with the left mouse button):
                 if ((this.field.getMode() === 0) && leftClick) {
@@ -325,9 +320,9 @@ export class TileInner extends TileParent {
                         this.spread();
                     
                     // If there is a mine on the tile the game is terminated:
-                    } else if (this.contents === -1) {
+                    } else if (this.contents === Contents.MINE) {
                         this.setMine();
-                        this.onMine();
+                        this.field.onDefeat();
                     
                     // When a number is on the tile, the number is revealed:
                     } else {
@@ -337,12 +332,12 @@ export class TileInner extends TileParent {
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button):
                 } else {
                     this.setFlag();
-                    this.stats.addFlag(this.contents === -1);
+                    this.stats.addFlag(this.contents === Contents.MINE);
                 }
 
                 break;
 
-            case Revealed.QUESTION_MARK: // If there is a question mark on the tile:
+            case Revealed.QUESTION_MARK:
 
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), the tile is set to be not revealed:
                 if ((this.field.getMode() === 1) || !leftClick) {
@@ -352,21 +347,21 @@ export class TileInner extends TileParent {
 
                 break;
 
-            case Revealed.FLAG: // If there is a flag on the tile:
+            case Revealed.FLAG:
 
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), a question mark is set:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setQuestionMark();
-                    this.stats.removeFlag(this.contents === -1);
+                    this.stats.removeFlag(this.contents === Contents.MINE);
                     this.stats.addQuestionMark();
                 }
 
                 break;
             
-            case Revealed.IS: // The tile is revealed:
+            case Revealed.IS:
 
                 // If there is a number on the tile:
-                if (this.contents > 0) {
+                if ((this.contents >= Contents.ONE) && (this.contents <= Contents.EIGHT)) {
                     const amountFlags = this.elementBottom.isFlag() + this.elementLeft.isFlag() + this.elementRight.isFlag() + this.elementTop.isFlag() + this.elementBottom.amountFlagsX() + this.elementTop.amountFlagsX();
 
                     // When the number on the tile matches the amount of flags in the surrounding eight tiles, the eight tiles are revealed:
@@ -383,15 +378,9 @@ export class TileInner extends TileParent {
                 break;
         }
 
-        const time = this.stats.isVictory();
-
-        if (time !== -1) {
+        if (this.stats.isVictory()) {
             this.field.onVictory();
         }
-    }
-
-    private onMine() {
-        this.field.onDefeat();
     }
 
     forceReveal() {
@@ -402,11 +391,11 @@ export class TileInner extends TileParent {
             return;
         }
 
-        if (this.contents === -1) {
+        if (this.contents === Contents.MINE) {
             if (this.revealed !== Revealed.FLAG) {
                 this.setMine();
             }
-        } else if (this.contents === 0) {
+        } else if (this.contents === Contents.EMPTY) {
             this.lookRevealed()
         } else {
             this.setNumber();

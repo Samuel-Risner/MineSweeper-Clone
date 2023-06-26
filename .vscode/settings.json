@@ -1,22 +1,11 @@
 {
-    "cSpell.words": [
-        "leaderboard",
-        "Leaderboard",
-        "nodenext",
-        "Risner",
-        "tailwindcss",
-        "venv"
-    ],
     "spellright.language": [
-        "en"
+        "en-US-10-1."
     ],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext",
         "typescript"
-    ],
-    "files.associations": {
-        "*.css": "tailwindcss"
-    }
+    ]
 }

@@ -1,3 +1,4 @@
 /node_modules
 /venv
 /minesweeper-clone
+.vscode/

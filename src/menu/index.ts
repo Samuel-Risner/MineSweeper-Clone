@@ -1,4 +1,3 @@
-import { Game } from "../game.js";
 import initCustom from "./initCustom.js";
 import initDefault from "./initDefault.js";
 
@@ -6,13 +5,11 @@ export class Menu {
     
     private menuElement: HTMLDivElement;
 
-    constructor(
-        private game: Game
-    ) {
+    constructor(newGame: (width: number, height: number, amountMines: number) => void) {
         this.menuElement = document.getElementById("menu") as HTMLDivElement;
 
-        initCustom(this);
-        initDefault(this);
+        initCustom(newGame);
+        initDefault(newGame);
     }
 
     hide() {
@@ -21,12 +18,6 @@ export class Menu {
 
     show() {
         this.menuElement.hidden = false;
-    }
-
-    newGame(width: number, height: number, amountMines: number) {
-        this.game.newGame(width, height, amountMines);
-        this.hide();
-        this.game.show();
     }
 
 }

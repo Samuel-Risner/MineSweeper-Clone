@@ -8,9 +8,11 @@ export default class Stats {
     private placedFlags: number;
     private placedQuestionMarks: number;
 
-    constructor(
-        private amountMines: number
-    ) {
+    private amountMines: number;
+
+    constructor() {
+        this.amountMines = 0;
+        
         this.placedFlags = 0;
         this.placedQuestionMarks = 0;
         this.foundMines = 0;
@@ -72,6 +74,11 @@ export default class Stats {
 
     isVictory(): boolean {
         return (this.foundMines === this.amountMines) && (this.placedQuestionMarks === 0);
-    }    
+    }
+
+    setAmountMines(amount: number) {
+        this.amountMines = amount;
+        this.amountMinesElement.textContent = String(amount);
+    }
 
 }

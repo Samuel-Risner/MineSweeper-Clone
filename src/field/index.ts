@@ -1,7 +1,7 @@
-import { GameBar } from "../gameBar/index.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 import { TileParent } from "./tile_parent.js";
+import Stats from "../stats";
 
 export class Field {
 
@@ -14,9 +14,15 @@ export class Field {
     private allTiles: TileParent[][];
     
     constructor(
-        private width: number,
-        private height: number,
-        private amountMines: number
+        stats: Stats,
+        width: number,
+        height: number,
+        private amountMines: number,
+        public onDefeat: () => void,
+        public onVictory: () => void,
+        private startGame: () => void,
+        public getMode: () => 0 | 1
+
     ) {
         this.container = document.getElementById("fieldContainer") as HTMLDivElement;
         this.table = document.createElement("table");
@@ -26,22 +32,22 @@ export class Field {
 
         this.tiles = [];
         this.allTiles = [];
-        this.createField();
+        this.createField(width, height, stats);
     }
 
-    private createField() {
+    private createField(width: number, height: number, stats: Stats) {
         const outer = new TileOuter();
 
         // Top row with outer elements:
         let row: TileParent[] = [];
         this.allTiles.push(row);
 
-        for (let i = 0; i < this.width + 2; i++) {
+        for (let i = 0; i < width + 2; i++) {
             row.push(outer);
         }
 
         // The middle rows, starting and ending with outer tiles and in the middle with inner tiles:
-        for (let i = 0; i < this.height; i++) {
+        for (let i = 0; i < height; i++) {
             row = [];
             this.allTiles.push(row);
 
@@ -53,11 +59,11 @@ export class Field {
             const rowElement = document.createElement("tr");
             this.table.appendChild(rowElement);
 
-            for (let j = 0; j < this.width; j++)  {
+            for (let j = 0; j < width; j++)  {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);
 
-                const t = new TileInner(cellElement, outer, outer, outer, outer, this, this.stats);
+                const t = new TileInner(cellElement, outer, outer, outer, outer, this, stats);
                 row.push(t);
                 row2.push(t);
             }
@@ -69,7 +75,7 @@ export class Field {
         row = [];
         this.allTiles.push(row);
 
-        for (let i = 0; i < this.width + 2; i++) {
+        for (let i = 0; i < width + 2; i++) {
             row.push(outer);
         }
 
@@ -127,40 +133,19 @@ export class Field {
 
         this.firstClickHappened = true;
         this.setTileContents(el.mayNotBeMine());
-        this.stats.startTimer();
+        this.startGame();
     }
 
-    getMode(): 0 | 1 {
-        return this.gameSettings.getMode();
-    }
-
-    onVictory() {
-        this.resultPopup.onVictory(this.stats.getTimeDisplay());
-    }
-
-    onDefeatLight() {
-        this.stats.onGameOver();
-    }
-
-    onDefeat() {
-        this.onDefeatLight();
-        
+    forceReveal() {
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();
             }
         }
-
-        this.resultPopup.onDefeat(this.stats.getTimeDisplay());
     }
 
     remove() {
-        this.fieldTable.remove();
-        this.resultPopup.hide();
-    }
-
-    onCloseButton() {
-        this.stats.stopTimer();
+        this.table.remove();
     }
 
 }

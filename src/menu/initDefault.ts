@@ -1,7 +1,6 @@
-import { Menu } from "./index.js";
-import { settings } from "../settings.js";
+import { settings } from "./../settings.js";
 
-export default function initDefault(menu: Menu) {
+export default function initDefault(newGame: (width: number, height: number, amountMines: number) => void) {
     const container = document.getElementById("selectFieldSizeContainer") as HTMLDivElement;
 
     for (const size of settings.defaultFieldSizes) {
@@ -17,7 +16,7 @@ export default function initDefault(menu: Menu) {
         container.appendChild(button);
 
         button.onclick = () => {
-            menu.newGame(size.width, size.height, size.amountMines);
+            newGame(size.width, size.height, size.amountMines);
         }
     }
 }

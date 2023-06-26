@@ -1,35 +1,54 @@
-import Timer from "./timer";
-import PlaceMode from "./placeMode";
-import Stats from "./stats";
-import ResultPopup from "./resultPopup";
+import initCloseButton from "./initCloseButton.js";
+import PlaceMode from "./placeMode.js";
+import ResultPopup from "./resultPopup.js";
+import Timer from "./timer.js";
+import Stats from "./../stats.js";
 
-export class GameBar {
-
-    private closeButton: HTMLButtonElement;
+export default class GameBar {
 
     private timer: Timer;
     private placeMode: PlaceMode;
-    private stats: Stats;
     private resultPopup: ResultPopup;
 
-    constructor(amountMines: number) {
-        this.closeButton = document.getElementById("closeGame") as HTMLButtonElement;
-        this.closeButton.onclick = () => {
-            this.timer.stop();
-        }
-
-        this.timer = new Timer();
+    constructor(
+        _onQuit: () => void,
+        private stats: Stats
+    ) {
+        initCloseButton(_onQuit);
         this.placeMode = new PlaceMode();
-        this.stats = new Stats(amountMines);
         this.resultPopup = new ResultPopup();
+        this.timer = new Timer();
+    }
+
+    private onGameEnd() {
+        this.timer.stop();
+    }
+
+    onDefeat() {
+        this.onGameEnd();
+        this.resultPopup.onDefeat(this.timer.getTimeToDisplay());
+    }
+
+    onVictory() {
+        this.onGameEnd();
+        this.resultPopup.onVictory(this.timer.getTimeToDisplay());
+    }
+
+    onQuit() {
+        this.onGameEnd();
     }
 
     newGame(amountMines: number) {
-
+        this.stats.setAmountMines(amountMines);
+        this.resultPopup.hide();
+    }
+    
+    startGame() {
+        this.timer.start();
     }
 
-    onClick() {
-        
+    getPlaceMode(): 0 | 1 {
+        return this.placeMode.getMode();
     }
 
 }

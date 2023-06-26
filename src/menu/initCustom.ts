@@ -1,7 +1,6 @@
-import { Menu } from "./index.js";
-import { settings } from "../settings.js";
+import { settings } from "./../settings.js";
 
-export default function initCustom(menu: Menu) {
+export default function initCustom(newGame: (width: number, height: number, amountMines: number) => void) {
     const inputContainerElement = document.getElementById("customInputContainerElement") as HTMLDivElement;
     const showInputsButton = document.getElementById("showSelectCustomSizeInputs") as HTMLButtonElement;
     const inputCustomWidthElement = document.getElementById("inputCustomWidth") as HTMLInputElement;
@@ -58,6 +57,6 @@ export default function initCustom(menu: Menu) {
             return;
         }
 
-        menu.newGame(width, height, amountMines);
+        newGame(width, height, amountMines);
     }
 }
