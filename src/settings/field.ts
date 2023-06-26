@@ -8,14 +8,6 @@ export const field = {
      */
     minHeight: 4,
     /**
-     * The maximum width the field may have.
-     */
-    maxWidth: 500,
-    /**
-     * The maximum height the field may have.
-     */
-    maxHeight: 500,
-    /**
      * The minimum amount of mines the field may have.
      */
     minAmountMines: 1,

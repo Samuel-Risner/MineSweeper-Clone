@@ -1,7 +1,7 @@
-import { Field } from "./field.js";
-import { Stats } from "./stats.js";
+import { Field } from "./index.js";
 import { TileParent } from "./tile_parent.js";
 import { settings } from "./../settings.js";
+import { Revealed, Contents } from "./enums.js";
 
 export class TileInner extends TileParent {
 
@@ -10,46 +10,39 @@ export class TileInner extends TileParent {
      * `0` -> empty;
      * `1` to `8` -> corresponding numbers
      */
-    private mode: number;
-    /**
-     * `0` -> tile is not revealed;
-     * `1` -> there is a question mark on the tile;
-     * `2` -> there is a flag on the tile;
-     * `3` -> tile is revealed
-     */
-    private revealed: 0 | 1 | 2 | 3;
+    private contents: Contents;
+    private revealed: Revealed;
 
     /**
-     * Displays the tiles background color and handles the click event.
+     * Displays the tiles background color and receives the onclick event.
      */
-    private displayElement: HTMLButtonElement;
+    private colorElement: HTMLButtonElement;
     /**
      * Displays the number the tile has, otherwise an empty string or the element is hidden.
      */
-    private tileContentsElement: HTMLDivElement;
+    private numberElement: HTMLDivElement;
     /**
      * Displays the mine or question mark image, otherwise the source is an empty string or the element is hidden.
      */
-    private tileImageElement: HTMLImageElement;
+    private imageElement: HTMLImageElement;
 
     constructor(
-        fieldElement: HTMLTableCellElement,
-        protected elementTop: TileParent,
-        protected elementLeft: TileParent,
-        protected elementBottom: TileParent,
-        protected elementRight: TileParent,
-        private field: Field,
-        private stats: Stats
+        tableCellElement: HTMLTableCellElement,
+        private elementTop: TileParent,
+        private elementLeft: TileParent,
+        private elementBottom: TileParent,
+        private elementRight: TileParent,
+        private field: Field
     ) {
         super();
 
-        this.displayElement = document.createElement("button");
-        this.tileContentsElement = document.createElement("div");
-        this.tileImageElement = document.createElement("img");
-        this._setupElements(fieldElement);
+        this.colorElement = document.createElement("button");
+        this.numberElement = document.createElement("div");
+        this.imageElement = document.createElement("img");
+        this.setupElements(tableCellElement);
 
-        this.mode = 0;
-        this.revealed = 0;
+        this.contents = Contents.EMPTY;
+        this.revealed = Revealed.NOT;
     }
 
     //
@@ -57,24 +50,24 @@ export class TileInner extends TileParent {
     //
 
     /**
-     * Appends the html elements together, adds the onclick events to them and stets their class names using TailwindCSS.
-     * @param fieldElement (Passed in the constructor.)
+     * Appends the html elements together, adds the onclick events to them and stets their class names in TailwindCSS.
+     * @param tableCellElement (Passed in the constructor.)
      */
-    private _setupElements(fieldElement: HTMLTableCellElement) {
-        fieldElement.appendChild(this.displayElement);
-        this.displayElement.appendChild(this.tileContentsElement);
-        this.displayElement.appendChild(this.tileImageElement);
+    private setupElements(tableCellElement: HTMLTableCellElement) {
+        tableCellElement.appendChild(this.colorElement);
+        this.colorElement.appendChild(this.numberElement);
+        this.colorElement.appendChild(this.imageElement);
 
-        this.displayElement.className = settings.tile.styles.default;
-        this.tileContentsElement.className = "m-auto";
-        this.tileContentsElement.hidden = true;
-        this.tileImageElement.hidden = true;
+        this.colorElement.className = settings.tile.styles.default;
+        this.numberElement.className = settings.tile.numberElementStyles.default;
+        this.numberElement.hidden = true;
+        this.imageElement.hidden = true;
 
-        this.displayElement.onclick = () => {
+        this.colorElement.onclick = () => {
             this.onClick(true);
         }
 
-        this.displayElement.oncontextmenu = (ev: MouseEvent) => {
+        this.colorElement.oncontextmenu = (ev: MouseEvent) => {
             ev.preventDefault();
             this.onClick(false);
         }
@@ -84,14 +77,14 @@ export class TileInner extends TileParent {
      * Sets the tiles number to correspond to the amount of mines in the eight surrounding tiles.
      */
     placeNumber() {
-        if (this.mode === -1) {
+        if (this.contents === Contents.MINE) {
             return;
         }
 
-        this.mode = this.elementBottom.isMine() + this.elementLeft.isMine() + this.elementTop.isMine() + this.elementRight.isMine() + this.elementTop.amountMinesX() + this.elementBottom.amountMinesX();
+        this.contents = this.elementBottom.isMine() + this.elementLeft.isMine() + this.elementTop.isMine() + this.elementRight.isMine() + this.elementTop.amountMinesX() + this.elementBottom.amountMinesX();
 
-        if (this.mode > 0) {
-            this.tileContentsElement.textContent = String(this.mode);
+        if ((this.contents >= Contents.ONE) && (this.contents <= Contents.EIGHT)) {
+            this.numberElement.textContent = String(this.contents);
         }
     }
 
@@ -135,11 +128,11 @@ export class TileInner extends TileParent {
      * @returns `true` if the tile was set to contain a mine, `false` if it already contained a mine.
      */
     placeMine(): boolean {
-        if (this.mode === -1) {
+        if (this.contents === Contents.MINE) {
             return false;
         }
 
-        this.mode = -1;
+        this.contents = Contents.MINE;
         return true;
     }
 
@@ -151,7 +144,7 @@ export class TileInner extends TileParent {
      * @returns `1`: tile contains a mine; `0`: tile contains no mine.
      */
     isMine(): 0 | 1 {
-        return this.mode === -1? 1 : 0;
+        return this.contents === Contents.MINE? 1 : 0;
     }
 
     /**
@@ -165,7 +158,7 @@ export class TileInner extends TileParent {
      * @returns `1`: tile contains a flag; `0`: tile contains no flag.
      */
     isFlag(): 0 | 1 {
-        return this.revealed === 2? 1 : 0;
+        return this.revealed === Revealed.FLAG? 1 : 0;
     }
 
     /**
@@ -191,24 +184,22 @@ export class TileInner extends TileParent {
      * When an empty tile is clicked all adjacent tiles are revealed until a tile containing a number is reached.
      */
     spread() {
-        // If the tile is already revealed nothing happens.
-        if (this.revealed !== 0) {
+        if (this.revealed !== Revealed.NOT) {
             return;
         }
 
-        // If the tile is a mine:
-        if (this.mode === -1) {
+        if (this.contents === Contents.MINE) {
             this.setMine();
             this.onMine();
             return;
         }
 
-        this.revealed = 3;
-        this.tileContentsElement.hidden = false;
+        this.revealed = Revealed.IS;
+        this.numberElement.hidden = false;
         this.lookRevealed();
 
         // If the tile contains a number its style is set and the spreading stops.
-        if (this.mode > 0) {
+        if (this.contents >= Contents.ONE) {
             this.setStyle();
             return;
         }
@@ -251,91 +242,66 @@ export class TileInner extends TileParent {
      * Sets the tile to have a lighter background color, indicating that it is revealed.
      */
     private lookRevealed() {
-        this.displayElement.className = settings.tile.styles.revealed;
+        this.colorElement.className = settings.tile.styles.revealed;
     }
 
     /**
      * Sets the color for the number/text for the tiles number.
      */
     private setStyle() {
-        switch (this.mode) {
-            case 1:
-                this.tileContentsElement.className = "text-blue-500 m-auto";
-                break;
-            case 2:
-                this.tileContentsElement.className = "text-green-500 m-auto";
-                break;
-            case 3:
-                this.tileContentsElement.className = "text-red-500 m-auto";
-                break;
-            case 4:
-                this.tileContentsElement.className = "text-purple-500 m-auto";
-                break;
-            case 5:
-                this.tileContentsElement.className = "text-maroon-500 m-auto";
-                break;
-            case 6:
-                this.tileContentsElement.className = "text-turquoise-500 m-auto";
-                break;
-            case 7:
-                this.tileContentsElement.className = "text-black m-auto";
-                break;
-            case 8:
-                this.tileContentsElement.className = "text-gray-500 m-auto";
-                break;
-        }
+        this.numberElement.className = settings.tile.numberElementStyles[this.contents] as string;
     }
 
     /**
      * Sets the tile to display a flag.
      */
     private setFlag() {
-        this.tileImageElement.src = "static/assets/1600x1600/flag.png";
-        this.tileImageElement.hidden = false;
-        this.tileContentsElement.hidden = true;
-        this.revealed = 2;
+        this.imageElement.src = settings.images.flag;
+        this.imageElement.hidden = false;
+        this.numberElement.hidden = true;
+        this.revealed = Revealed.FLAG;
     }
 
     /**
      * Sets the tile to display a question mark.
      */
     private setQuestionMark() {
-        this.tileImageElement.src = "static/assets/1600x1600/question_mark.png";
-        this.tileImageElement.hidden = false;
-        this.tileContentsElement.hidden = true;
-        this.revealed = 1;
+        this.imageElement.src = settings.images.questionMark;
+        this.imageElement.hidden = false;
+        this.numberElement.hidden = true;
+        this.revealed = Revealed.QUESTION_MARK;
     }
 
     /**
      * Sets the tile to be unrevealed.
      */
     private setNotRevealed() {
-        this.tileImageElement.src = "";
-        this.tileImageElement.hidden = true;
-        this.tileContentsElement.hidden = true;
-        this.revealed = 0;
+        this.imageElement.src = "";
+        this.imageElement.hidden = true;
+        this.numberElement.hidden = true;
+        this.revealed = Revealed.NOT;
     }
 
     /**
      * Sets the tile to display a mine.
      */
     private setMine() {
-        this.tileImageElement.src = "static/assets/1600x1600/mine.png";
-        this.tileImageElement.hidden = false;
-        this.tileContentsElement.hidden = true;
-        this.revealed = 3;
+        this.imageElement.src = settings.images.mine;
+        this.imageElement.hidden = false;
+        this.numberElement.hidden = true;
+        this.revealed = Revealed.IS;
 
-        this.displayElement.className = settings.tile.styles.mine;
+        this.colorElement.className = settings.tile.styles.mine;
     }
 
     /**
      * Sets the tile to display its number.
      */
     private setNumber() {
-        this.tileImageElement.src = "";
-        this.tileImageElement.hidden = true;
-        this.tileContentsElement.hidden = false;
-        this.revealed = 3;
+        this.imageElement.src = "";
+        this.imageElement.hidden = true;
+        this.numberElement.hidden = false;
+        this.revealed = Revealed.IS;
 
         this.lookRevealed();
         this.setStyle();
@@ -349,17 +315,17 @@ export class TileInner extends TileParent {
         this.field.onClick(this);
 
         switch (this.revealed) {
-            case 0: // If the tile is not revealed yet and no question mark or flag is on it:
+            case Revealed.NOT: // If the tile is not revealed yet and no question mark or flag is on it:
 
                 // If the tile should be revealed (the mode is in "reveal tile" and the user clicked with the left mouse button):
                 if ((this.field.getMode() === 0) && leftClick) {
 
                     // If the tile is empty it is revealed, including the adjacent tiles:
-                    if (this.mode === 0) {
+                    if (this.contents === 0) {
                         this.spread();
                     
                     // If there is a mine on the tile the game is terminated:
-                    } else if (this.mode === -1) {
+                    } else if (this.contents === -1) {
                         this.setMine();
                         this.onMine();
                     
@@ -371,12 +337,12 @@ export class TileInner extends TileParent {
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button):
                 } else {
                     this.setFlag();
-                    this.stats.addFlag(this.mode === -1);
+                    this.stats.addFlag(this.contents === -1);
                 }
 
                 break;
 
-            case 1: // If there is a question mark on the tile:
+            case Revealed.QUESTION_MARK: // If there is a question mark on the tile:
 
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), the tile is set to be not revealed:
                 if ((this.field.getMode() === 1) || !leftClick) {
@@ -386,25 +352,25 @@ export class TileInner extends TileParent {
 
                 break;
 
-            case 2: // If there is a flag on the tile:
+            case Revealed.FLAG: // If there is a flag on the tile:
 
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), a question mark is set:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setQuestionMark();
-                    this.stats.removeFlag(this.mode === -1);
+                    this.stats.removeFlag(this.contents === -1);
                     this.stats.addQuestionMark();
                 }
 
                 break;
             
-            case 3: // The tile is revealed:
+            case Revealed.IS: // The tile is revealed:
 
                 // If there is a number on the tile:
-                if (this.mode > 0) {
+                if (this.contents > 0) {
                     const amountFlags = this.elementBottom.isFlag() + this.elementLeft.isFlag() + this.elementRight.isFlag() + this.elementTop.isFlag() + this.elementBottom.amountFlagsX() + this.elementTop.amountFlagsX();
 
                     // When the number on the tile matches the amount of flags in the surrounding eight tiles, the eight tiles are revealed:
-                    if (this.mode === amountFlags) {
+                    if (this.contents === amountFlags) {
                         this.elementBottom.spread();
                         this.elementLeft.spread();
                         this.elementRight.spread();
@@ -429,24 +395,24 @@ export class TileInner extends TileParent {
     }
 
     forceReveal() {
-        this.displayElement.onclick = null;
-        this.displayElement.oncontextmenu = null;
+        this.colorElement.onclick = null;
+        this.colorElement.oncontextmenu = null;
         
-        if (this.revealed === 3) {
+        if (this.revealed === Revealed.IS) {
             return;
         }
 
-        if (this.mode === -1) {
-            if (this.revealed !== 2) {
+        if (this.contents === -1) {
+            if (this.revealed !== Revealed.FLAG) {
                 this.setMine();
             }
-        } else if (this.mode === 0) {
+        } else if (this.contents === 0) {
             this.lookRevealed()
         } else {
             this.setNumber();
         }
         
-        this.displayElement.className = settings.tile.styles.wrongGuess;
+        this.colorElement.className = settings.tile.styles.wrongGuess;
     }
 
 }

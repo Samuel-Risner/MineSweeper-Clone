@@ -1,4 +1,4 @@
-export class GameSettings {
+export default class PlaceMode {
     
     /**
      * reveal tile, set flag
@@ -15,10 +15,12 @@ export class GameSettings {
             document.getElementById("revealTile") as HTMLDivElement,
             document.getElementById("setFlag") as HTMLDivElement
         ];
+
         this.changeClickModeButton = document.getElementById("changeClickMode") as HTMLButtonElement;
         this.changeClickModeButton.onclick = () => {
             this.onClick();
         }
+        
         this.clickMode = 0;
     }
 

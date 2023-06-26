@@ -1,43 +1,28 @@
-import { Game } from "./../game.js";
-import { GameSettings } from "./game_settings.js";
-import { ResultPopup } from "./result_popup.js";
-import { Stats } from "./stats.js";
+import { GameBar } from "../gameBar/index.js";
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 import { TileParent } from "./tile_parent.js";
 
 export class Field {
 
-    /**
-     * The html element in which "this.fieldTable" is displayed.
-     */
-    private fieldContainer: HTMLDivElement;
-    /**
-     * The html element which contains all the tiles the user can interact with.
-     */
-    private fieldTable: HTMLTableElement;
+    private container: HTMLDivElement;
+    private table: HTMLTableElement;
 
     private firstClickHappened: boolean;
 
     private tiles: TileInner[][];
     private allTiles: TileParent[][];
-
-    private stats: Stats;
     
     constructor(
         private width: number,
         private height: number,
-        private amountMines: number,
-        private gameSettings: GameSettings,
-        private resultPopup: ResultPopup
+        private amountMines: number
     ) {
-        this.fieldContainer = document.getElementById("fieldContainer") as HTMLDivElement;
-        this.fieldTable = document.createElement("table");
-        this.fieldContainer.appendChild(this.fieldTable);
+        this.container = document.getElementById("fieldContainer") as HTMLDivElement;
+        this.table = document.createElement("table");
+        this.container.appendChild(this.table);
 
         this.firstClickHappened = false;
-
-        this.stats = new Stats(this.amountMines);
 
         this.tiles = [];
         this.allTiles = [];
@@ -66,7 +51,7 @@ export class Field {
             this.tiles.push(row2);
 
             const rowElement = document.createElement("tr");
-            this.fieldTable.appendChild(rowElement);
+            this.table.appendChild(rowElement);
 
             for (let j = 0; j < this.width; j++)  {
                 const cellElement = document.createElement("td");
@@ -174,10 +159,6 @@ export class Field {
         this.resultPopup.hide();
     }
 
-    /**
-     * What the game does when the close game button is pressed:
-     *  - stops the game timer
-     */
     onCloseButton() {
         this.stats.stopTimer();
     }
