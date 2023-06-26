@@ -4,7 +4,7 @@ export const tile = {
         revealed: "bg-neutral-300 w-10 sm:w-16 aspect-square flex border-2 border-gray-400 text-xl sm:text-2xl",
         mine: "bg-red-600 w-10 sm:w-16 aspect-square flex border-2 border-gray-400",
         wrongGuess: "bg-red-200 w-10 sm:w-16 aspect-square flex border-2 border-gray-400 text-xl sm:text-2xl",
-        imageElement: "w-full h-full"
+        imageElement: "w-11/12 h-11/12 m-auto"
     },
     numberElementStyles: {
         default: "m-auto",
