@@ -1,36 +1,40 @@
 import { TileInner } from "./tile_inner.js";
 import { TileOuter } from "./tile_outer.js";
 export class Field {
-    width;
-    height;
     amountMines;
+    onDefeat;
+    onVictory;
+    startGame;
+    getMode;
     container;
     table;
     firstClickHappened;
     tiles;
     allTiles;
-    constructor(width, height, amountMines) {
-        this.width = width;
-        this.height = height;
+    constructor(stats, width, height, amountMines, onDefeat, onVictory, startGame, getMode) {
         this.amountMines = amountMines;
+        this.onDefeat = onDefeat;
+        this.onVictory = onVictory;
+        this.startGame = startGame;
+        this.getMode = getMode;
         this.container = document.getElementById("fieldContainer");
         this.table = document.createElement("table");
         this.container.appendChild(this.table);
         this.firstClickHappened = false;
         this.tiles = [];
         this.allTiles = [];
-        this.createField();
+        this.createField(width, height, stats);
     }
-    createField() {
+    createField(width, height, stats) {
         const outer = new TileOuter();
         // Top row with outer elements:
         let row = [];
         this.allTiles.push(row);
-        for (let i = 0; i < this.width + 2; i++) {
+        for (let i = 0; i < width + 2; i++) {
             row.push(outer);
         }
         // The middle rows, starting and ending with outer tiles and in the middle with inner tiles:
-        for (let i = 0; i < this.height; i++) {
+        for (let i = 0; i < height; i++) {
             row = [];
             this.allTiles.push(row);
             row.push(outer);
@@ -38,10 +42,10 @@ export class Field {
             this.tiles.push(row2);
             const rowElement = document.createElement("tr");
             this.table.appendChild(rowElement);
-            for (let j = 0; j < this.width; j++) {
+            for (let j = 0; j < width; j++) {
                 const cellElement = document.createElement("td");
                 rowElement.appendChild(cellElement);
-                const t = new TileInner(cellElement, outer, outer, outer, outer, this, this.stats);
+                const t = new TileInner(cellElement, outer, outer, outer, outer, this, stats);
                 row.push(t);
                 row2.push(t);
             }
@@ -50,7 +54,7 @@ export class Field {
         // Bottom row with outer elements:
         row = [];
         this.allTiles.push(row);
-        for (let i = 0; i < this.width + 2; i++) {
+        for (let i = 0; i < width + 2; i++) {
             row.push(outer);
         }
         // Link the inner elements together:
@@ -100,31 +104,16 @@ export class Field {
         }
         this.firstClickHappened = true;
         this.setTileContents(el.mayNotBeMine());
-        this.stats.startTimer();
+        this.startGame();
     }
-    getMode() {
-        return this.gameSettings.getMode();
-    }
-    onVictory() {
-        this.resultPopup.onVictory(this.stats.getTimeDisplay());
-    }
-    onDefeatLight() {
-        this.stats.onGameOver();
-    }
-    onDefeat() {
-        this.onDefeatLight();
+    forceReveal() {
         for (const tileList of this.tiles) {
             for (const tile of tileList) {
                 tile.forceReveal();
             }
         }
-        this.resultPopup.onDefeat(this.stats.getTimeDisplay());
     }
     remove() {
-        this.fieldTable.remove();
-        this.resultPopup.hide();
-    }
-    onCloseButton() {
-        this.stats.stopTimer();
+        this.table.remove();
     }
 }

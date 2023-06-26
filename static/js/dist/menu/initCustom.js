@@ -1,5 +1,5 @@
-import { settings } from "../settings.js";
-export default function initCustom(menu) {
+import { settings } from "./../settings.js";
+export default function initCustom(newGame) {
     const inputContainerElement = document.getElementById("customInputContainerElement");
     const showInputsButton = document.getElementById("showSelectCustomSizeInputs");
     const inputCustomWidthElement = document.getElementById("inputCustomWidth");
@@ -45,6 +45,6 @@ export default function initCustom(menu) {
             console.error(`Not enough space for all the mines!`);
             return;
         }
-        menu.newGame(width, height, amountMines);
+        newGame(width, height, amountMines);
     };
 }

@@ -1,7 +1,6 @@
 import { Field } from "./field/index.js";
-import { GameSettings } from "./game/game_settings.js";
-import { ResultPopup } from "./game/result_popup.js";
 export class Game {
+    stats;
     /**
      * The html element which contains the game field.
      */
@@ -10,13 +9,10 @@ export class Game {
      * The game field element or null, when there is no game yet.
      */
     field;
-    gameSettings;
-    resultPopup;
-    constructor() {
+    constructor(stats) {
+        this.stats = stats;
         this.gameContainer = document.getElementById("game");
         this.field = null;
-        this.gameSettings = new GameSettings();
-        this.resultPopup = new ResultPopup();
     }
     /**
      * Creates a new field with the passed parameters and deletes the old one.
@@ -24,12 +20,9 @@ export class Game {
      * @param height The height of the field.
      * @param amountMines The amount of mines in the field.
      */
-    newGame(width, height, amountMines) {
+    newGame(width, height, amountMines, onDefeat, onVictory, startGame, getMode) {
         this.field?.remove();
-        this.field = new Field(width, height, amountMines, this.gameSettings, this.resultPopup);
-    }
-    onCloseButton() {
-        this.field?.onCloseButton();
+        this.field = new Field(this.stats, width, height, amountMines, onDefeat, onVictory, startGame, getMode);
     }
     hide() {
         this.gameContainer.hidden = true;

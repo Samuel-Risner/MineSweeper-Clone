@@ -7,11 +7,7 @@ export class TileInner extends TileParent {
     elementBottom;
     elementRight;
     field;
-    /**
-     * `-1` -> mine;
-     * `0` -> empty;
-     * `1` to `8` -> corresponding numbers
-     */
+    stats;
     contents;
     revealed;
     /**
@@ -26,19 +22,20 @@ export class TileInner extends TileParent {
      * Displays the mine or question mark image, otherwise the source is an empty string or the element is hidden.
      */
     imageElement;
-    constructor(tableCellElement, elementTop, elementLeft, elementBottom, elementRight, field) {
+    constructor(tableCellElement, elementTop, elementLeft, elementBottom, elementRight, field, stats) {
         super();
         this.elementTop = elementTop;
         this.elementLeft = elementLeft;
         this.elementBottom = elementBottom;
         this.elementRight = elementRight;
         this.field = field;
+        this.stats = stats;
+        this.contents = Contents.EMPTY;
+        this.revealed = Revealed.NOT;
         this.colorElement = document.createElement("button");
         this.numberElement = document.createElement("div");
         this.imageElement = document.createElement("img");
         this.setupElements(tableCellElement);
-        this.contents = Contents.EMPTY;
-        this.revealed = Revealed.NOT;
     }
     //
     // - Setup functions
@@ -158,8 +155,6 @@ export class TileInner extends TileParent {
             return;
         }
         if (this.contents === Contents.MINE) {
-            this.setMine();
-            this.onMine();
             return;
         }
         this.revealed = Revealed.IS;
@@ -197,7 +192,7 @@ export class TileInner extends TileParent {
         this.elementRight.addSelf(els);
     }
     //
-    // - Functions connected to TailwindCSS
+    // - Functions connected to appearance
     //
     /**
      * Sets the tile to have a lighter background color, indicating that it is revealed.
@@ -266,7 +261,7 @@ export class TileInner extends TileParent {
         // If this is the first ever tile being clicked the game needs further setup (creating mines and numbers).
         this.field.onClick(this);
         switch (this.revealed) {
-            case Revealed.NOT: // If the tile is not revealed yet and no question mark or flag is on it:
+            case Revealed.NOT:
                 // If the tile should be revealed (the mode is in "reveal tile" and the user clicked with the left mouse button):
                 if ((this.field.getMode() === 0) && leftClick) {
                     // If the tile is empty it is revealed, including the adjacent tiles:
@@ -274,9 +269,9 @@ export class TileInner extends TileParent {
                         this.spread();
                         // If there is a mine on the tile the game is terminated:
                     }
-                    else if (this.contents === -1) {
+                    else if (this.contents === Contents.MINE) {
                         this.setMine();
-                        this.onMine();
+                        this.field.onDefeat();
                         // When a number is on the tile, the number is revealed:
                     }
                     else {
@@ -286,27 +281,27 @@ export class TileInner extends TileParent {
                 }
                 else {
                     this.setFlag();
-                    this.stats.addFlag(this.contents === -1);
+                    this.stats.addFlag(this.contents === Contents.MINE);
                 }
                 break;
-            case Revealed.QUESTION_MARK: // If there is a question mark on the tile:
+            case Revealed.QUESTION_MARK:
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), the tile is set to be not revealed:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setNotRevealed();
                     this.stats.removeQuestionMark();
                 }
                 break;
-            case Revealed.FLAG: // If there is a flag on the tile:
+            case Revealed.FLAG:
                 // If a flag should be set (the mode is in "set flag" or the user clicked with the right mouse button), a question mark is set:
                 if ((this.field.getMode() === 1) || !leftClick) {
                     this.setQuestionMark();
-                    this.stats.removeFlag(this.contents === -1);
+                    this.stats.removeFlag(this.contents === Contents.MINE);
                     this.stats.addQuestionMark();
                 }
                 break;
-            case Revealed.IS: // The tile is revealed:
+            case Revealed.IS:
                 // If there is a number on the tile:
-                if (this.contents > 0) {
+                if ((this.contents >= Contents.ONE) && (this.contents <= Contents.EIGHT)) {
                     const amountFlags = this.elementBottom.isFlag() + this.elementLeft.isFlag() + this.elementRight.isFlag() + this.elementTop.isFlag() + this.elementBottom.amountFlagsX() + this.elementTop.amountFlagsX();
                     // When the number on the tile matches the amount of flags in the surrounding eight tiles, the eight tiles are revealed:
                     if (this.contents === amountFlags) {
@@ -320,13 +315,9 @@ export class TileInner extends TileParent {
                 }
                 break;
         }
-        const time = this.stats.isVictory();
-        if (time !== -1) {
+        if (this.stats.isVictory()) {
             this.field.onVictory();
         }
-    }
-    onMine() {
-        this.field.onDefeat();
     }
     forceReveal() {
         this.colorElement.onclick = null;
@@ -334,12 +325,12 @@ export class TileInner extends TileParent {
         if (this.revealed === Revealed.IS) {
             return;
         }
-        if (this.contents === -1) {
+        if (this.contents === Contents.MINE) {
             if (this.revealed !== Revealed.FLAG) {
                 this.setMine();
             }
         }
-        else if (this.contents === 0) {
+        else if (this.contents === Contents.EMPTY) {
             this.lookRevealed();
         }
         else {
