@@ -35,6 +35,7 @@ export class TileInner extends TileParent {
         this.colorElement = document.createElement("button");
         this.numberElement = document.createElement("div");
         this.imageElement = document.createElement("img");
+        this.imageElement.className = settings.tile.styles.imageElement;
         this.setupElements(tableCellElement);
     }
     //
