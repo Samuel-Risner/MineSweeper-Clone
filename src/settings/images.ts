@@ -1,5 +1,5 @@
 export const images = {
-    flag: "static/assets/svg/flag.png.min.svg",
-    questionMark: "static/assets/svg/question_mark.png.min.svg",
-    mine: "static/assets/svg/mine.png.min.svg"
+    flag: "static/assets/flag.png.min.svg",
+    questionMark: "static/assets/question_mark.png.min.svg",
+    mine: "static/assets/mine.png.min.svg"
 }
